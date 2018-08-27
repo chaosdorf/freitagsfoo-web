@@ -2,8 +2,10 @@
 <html lang="en">
     <head>
         <title>{% block title %}{% endblock %} - Freitagsfoo</title>
+        {{ bootstrap.load_css() }}
     </head>
     <body>
         <div id="content">{% block content %}{% endblock %}</div>
+        {{ bootstrap.load_js() }}
     </body>
 </html>
