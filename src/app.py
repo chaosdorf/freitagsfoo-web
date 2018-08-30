@@ -1,8 +1,19 @@
+from os import environ
 from flask import Flask, render_template
 from flask_bootstrap import Bootstrap
+from dotenv import load_dotenv
+from configparser import ConfigParser
 
 app = Flask(__name__)
 app.config["BOOTSTRAP_SERVE_LOCAL"] = True
+load_dotenv()
+config = dict()
+config_parser = ConfigParser()
+config_parser.read(environ["CONFIG_FILE"])
+for section in config_parser.sections():
+    for option in config_parser[section]:
+        config["_".join((section, option))] = config_parser[section][option]
+app.config.update(config)
 Bootstrap(app)
 
 
