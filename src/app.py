@@ -13,3 +13,8 @@ def hello():
 @app.route("/host")
 def host_initial():
     return render_template("host_initial.html")
+
+
+@app.route("/host/check")
+def host_check():
+    return render_template("host_check.html")

@@ -1,5 +1,17 @@
 {% extends "host_base.html" %}
 {% block title %}Initial{% endblock %}
 {% block content %}
-Some stuff.
+<h1>Hosting a Freitagsfoo: Initial</h1>
+<p>So, you want to host a Freitagsfoo? That's great!</p>
+<p>
+    You just need to follow the next steps.
+    (You can skip some if you want by just clicking at the next step at the top,
+    but that's not recommended.)
+</p>
+<p><em>Note</em>: The next step will take a bit of time to load.</p>
+
+<div class="wizard-buttons">
+    <a href="#" class="btn btn-secondary disabled" role="button" aria-disabled="true">Back</a>
+    <a href="{{ url_for("host_check") }}" class="btn btn-primary" role="button">Next: Check</a>
+</div>
 {% endblock %}
