@@ -1,8 +1,9 @@
 from os import environ
-from flask import Flask, render_template
+from flask import Flask, render_template, jsonify
 from flask_bootstrap import Bootstrap
 from dotenv import load_dotenv
 from configparser import ConfigParser
+from lib import infobeamer_check
 
 app = Flask(__name__)
 app.config["BOOTSTRAP_SERVE_LOCAL"] = True
@@ -29,3 +30,8 @@ def host_initial():
 @app.route("/host/check")
 def host_check():
     return render_template("host_check.html")
+
+
+@app.route("/host/check/info-beamer")
+def host_check_infobeamer():
+    return jsonify(infobeamer_check(app.config))
