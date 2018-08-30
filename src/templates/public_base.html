@@ -1,1 +1,6 @@
+{% from 'bootstrap/nav.html' import render_nav_item %}
 {% extends "base.html" %}
+{% block brand %}Talks{% endblock %}
+{% block navitems %}
+{{ render_nav_item("hello", "Home", use_li=True) }}
+{% endblock %}
