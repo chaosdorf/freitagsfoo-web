@@ -1,9 +1,9 @@
 from os import environ
-from flask import Flask, render_template, jsonify
+from flask import Flask, render_template, jsonify, request
 from flask_bootstrap import Bootstrap
 from dotenv import load_dotenv
 from configparser import ConfigParser
-from lib import infobeamer_check
+from lib import infobeamer_check, infobeamer_assign_background_setup
 
 app = Flask(__name__)
 app.config["BOOTSTRAP_SERVE_LOCAL"] = True
@@ -32,6 +32,11 @@ def host_check():
     return render_template("host_check.html")
 
 
-@app.route("/host/check/info-beamer")
+@app.route("/host/check/info-beamer", methods=("GET", "POST"))
 def host_check_infobeamer():
-    return jsonify(infobeamer_check(app.config))
+    if request.method == "GET":
+        return jsonify(infobeamer_check(app.config))
+    elif request.method == "POST":
+        return jsonify(infobeamer_assign_background_setup(app.config))
+    else:
+        raise RuntimeError("should not be reached!")

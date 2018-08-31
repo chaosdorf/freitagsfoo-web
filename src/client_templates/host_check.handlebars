@@ -19,6 +19,12 @@
     The Info-Beamer Pi ({{pi-id}}) is running the wrong setup:
     "{{pi-setup-name}}" ({{pi-setup-id}}) instead of
     "{{pi-expected-setup-name}}" ({{pi-expected-setup-id}}).
+    <a href="#" onclick="piChangeSetup()" class="alert-link">Change to {{pi-expected-setup-name}}?</a>
+</div>
+
+<div id="pi-error-assign-setup" class="alert alert-danger check-status" role="alert">
+    Couldn't assign setup "{{pi-setup-name}}" ({{pi-setup-id}}) to the Info-Beamer Pi ({{pi-id}}).
+    <a href="#" onclick="piChangeSetup()" class="alert-link">Retry?</a>
 </div>
 
 <div id="pi-success" class="alert alert-success check-status" role="alert">

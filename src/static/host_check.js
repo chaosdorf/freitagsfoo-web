@@ -65,6 +65,31 @@ function doCheckPi() {
     })
 }
 
+function piChangeSetup() {
+    jQuery("#pi-error-device-wrong-setup").fadeOut();
+    jQuery.ajax("/host/check/info-beamer", {method: "POST"}).always(function(data, status){
+        if(status !== "success") {
+            handleNetworkError(status);
+        }
+        else if(data["status"] === "ok") {
+            doCheckPi();
+        }
+        else if(data["status"] === "error") {
+            switch(data["last_step"]) {
+                case "info-beamer.com":
+                    renderStatus(["pi-error-info-beamer"], {});
+                    break;
+                case "assign-setup":
+                    renderStatus(["pi-error-assign-setup"], {
+                      "pi-id": data["data"]["device"]["id"],
+                      "pi-setup-name": data["data"]["actual"]["name"],
+                      "pi-setup-id": data["data"]["actual"]["name"],
+                    });
+            }
+        }
+    });
+}
+
 function handleNetworkError(status) {
     renderStatus(["network-error"], {
         "network-error-reason": status
