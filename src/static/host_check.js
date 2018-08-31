@@ -6,6 +6,7 @@ function doCheck() {
 }
 
 function reset() {
+    jQuery("#recheck-button").prop("disabled", true);
     jQuery(".status").fadeOut();
 }
 
@@ -21,9 +22,8 @@ function doCheckPi() {
     jQuery.ajax("/host/check/info-beamer").always(function(data, status) {
         if(status !== "success") {
             handleNetworkError(status);
-            return;
         }
-        if(data["status"] === "ok") {
+        else if(data["status"] === "ok") {
             renderStatus(["pi-success"], {
                 "pi-id": data["data"]["id"],
                 "pi-setup-name": data["data"]["setup"]["name"],
@@ -61,6 +61,7 @@ function doCheckPi() {
                     break;
             }
         }
+        jQuery("#recheck-button").prop("disabled", false);
     })
 }
 
