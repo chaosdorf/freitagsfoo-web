@@ -1,5 +1,6 @@
 from os import environ
 from requests import Session
+from requests.exceptions import ConnectionError, HTTPError
 
 INFO_BEAMER_API = "https://info-beamer.com/api/v1/"
 session = Session()
@@ -23,8 +24,10 @@ def result(status, *, data=None, reason=None, last_step=None):
 
 def infobeamer_check(config):
     # Get all available devices.
-    r = session.get(INFO_BEAMER_API + "device/list")
-    if not r.ok:
+    try:
+        r = session.get(INFO_BEAMER_API + "device/list")
+        r.raise_for_status()
+    except (ConnectionError, HTTPError, ValueError):
         return result("error", last_step="info-beamer.com")
     # Find the right device.
     for dev in r.json()["devices"]:
@@ -32,13 +35,31 @@ def infobeamer_check(config):
             device = dev
             break
     else:
-        return result("error", last_step="find-device")
+        return result(
+            "error",
+            data={
+                "id": int(config["info-beamer_pi_id"]),
+                "uuid": config["info-beamer_pi_uuid"],
+            },
+            last_step="find-device"
+        )
     # Check if the device is online and synced.
     if not device["is_online"]:
-        return result("error", last_step="check-device-online")
+        return result("error", data=device, last_step="check-device-online")
     if not device["is_synced"]:
-        return result("error", last_step="check-device-synced")
+        return result("error", data=device, last_step="check-device-synced")
     # Check if the right setup is running.
     if device["setup"]["id"] != int(config["info-beamer_background_setup_id"]):
-        return result("error", data=device["setup"], last_step="setup")
+        return result(
+            "error",
+            data={
+                "device": device,
+                "actual": device["setup"],
+                "expected": {
+                    "id": int(config["info-beamer_background_setup_id"]),
+                    "name": config["info-beamer_background_setup_name"],
+                },
+            },
+            last_step="setup"
+        )
     return result("ok", data=device)
