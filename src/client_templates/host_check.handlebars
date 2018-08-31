@@ -1,0 +1,30 @@
+<div id="pi-error-info-beamer" class="alert alert-danger check-status" role="alert">
+    Couldn't connect to
+    <a href="https://info-beamer.com" rel="noopener noreferrer" target="_blank">info-beamer.com</a>.
+</div>
+
+<div id="pi-error-device-missing" class="alert alert-danger check-status" role="alert">
+    The Info-Beamer Pi ({{pi-id}}) seems to be missing.
+</div>
+
+<div id="pi-error-device-offline" class="alert alert-danger check-status" role="alert">
+    The Info-Beamer Pi ({{pi-id}}) seems to be currently offline.
+</div>
+
+<div id="pi-error-device-not-synced" class="alert alert-danger check-status" role="alert">
+    The Info-Beamer Pi ({{pi-id}}) seems to be out of sync.
+</div>
+
+<div id="pi-error-device-wrong-setup" class="alert alert-danger check-status" role="alert">
+    The Info-Beamer Pi ({{pi-id}}) is running the wrong setup:
+    "{{pi-setup-name}}" ({{pi-setup-id}}) instead of
+    "{{pi-expected-setup-name}}" ({{pi-expected-setup-id}}).
+</div>
+
+<div id="pi-success" class="alert alert-success check-status" role="alert">
+    The Info-Beamer Pi ({{pi-id}}) is running the setup "{{pi-setup-name}}" ({{pi-setup-id}}).
+</div>
+
+<div id="network-error" class="alert alert-danger check-status" role="alert">
+    A network error occurred (reason: "{{network-error-reason}}").
+</div>
