@@ -27,10 +27,11 @@ def infobeamer_check(config):
     try:
         r = session.get(INFO_BEAMER_API + "device/list")
         r.raise_for_status()
+        data = r.json()
     except (ConnectionError, HTTPError, ValueError):
         return result("error", last_step="info-beamer.com")
     # Find the right device.
-    for dev in r.json()["devices"]:
+    for dev in data["devices"]:
         if dev["uuid"] == config["info-beamer_pi_uuid"]:
             device = dev
             break
