@@ -44,7 +44,7 @@ function doCheckPi() {
                     renderStatus(["pi-error-device-wrong-setup"], {
                         "pi-id": data["data"]["device"]["id"],
                         "pi-setup-name": data["data"]["actual"]["name"],
-                        "pi-setup-id": data["data"]["actual"]["name"],
+                        "pi-setup-id": data["data"]["actual"]["id"],
                         "pi-expected-setup-name": data["data"]["expected"]["name"],
                         "pi-expected-setup-id": data["data"]["expected"]["id"],
                     });
@@ -55,7 +55,7 @@ function doCheckPi() {
                         {
                             "pi-id": data["data"]["id"],
                             "pi-setup-name": data["data"]["setup"]["name"],
-                            "pi-setup-id": data["data"]["setup"]["name"],
+                            "pi-setup-id": data["data"]["setup"]["id"],
                         }
                     );
                     break;
@@ -65,7 +65,7 @@ function doCheckPi() {
                         {
                             "pi-id": data["data"]["id"],
                             "pi-setup-name": data["data"]["setup"]["name"],
-                            "pi-setup-id": data["data"]["setup"]["name"],
+                            "pi-setup-id": data["data"]["setup"]["id"],
                         }
                     );
                     break;
@@ -93,7 +93,7 @@ function piChangeSetup() {
                     renderStatus(["pi-error-assign-setup"], {
                       "pi-id": data["data"]["device"]["id"],
                       "pi-setup-name": data["data"]["actual"]["name"],
-                      "pi-setup-id": data["data"]["actual"]["name"],
+                      "pi-setup-id": data["data"]["actual"]["id"],
                     });
             }
         }
