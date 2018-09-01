@@ -40,16 +40,6 @@ function doCheckPi() {
                         "pi-id": data["data"]["id"],
                     });
                     break;
-                case "check-device-online":
-                    renderStatus(["pi-error-device-offline"], {
-                        "pi-id": data["data"]["id"],
-                    });
-                    break;
-                case "check-device-synced":
-                    renderStatus(["pi-error-device-not-synced"], {
-                        "pi-id": data["data"]["id"],
-                    });
-                    break;
                 case "setup":
                     renderStatus(["pi-error-device-wrong-setup"], {
                         "pi-id": data["data"]["device"]["id"],
@@ -58,6 +48,26 @@ function doCheckPi() {
                         "pi-expected-setup-name": data["data"]["expected"]["name"],
                         "pi-expected-setup-id": data["data"]["expected"]["id"],
                     });
+                    break;
+                case "check-device-online":
+                    renderStatus(
+                        ["pi-success", "pi-warning-device-offline"],
+                        {
+                            "pi-id": data["data"]["id"],
+                            "pi-setup-name": data["data"]["setup"]["name"],
+                            "pi-setup-id": data["data"]["setup"]["name"],
+                        }
+                    );
+                    break;
+                case "check-device-synced":
+                    renderStatus(
+                        ["pi-success", "pi-warning-device-not-synced"],
+                        {
+                            "pi-id": data["data"]["id"],
+                            "pi-setup-name": data["data"]["setup"]["name"],
+                            "pi-setup-id": data["data"]["setup"]["name"],
+                        }
+                    );
                     break;
             }
         }

@@ -1,18 +1,12 @@
 <div id="pi-error-info-beamer" class="alert alert-danger check-status" role="alert">
     Couldn't connect to
     <a href="https://info-beamer.com" rel="noopener noreferrer" target="_blank">info-beamer.com</a>.
+    Please check the connection to the internet.
 </div>
 
 <div id="pi-error-device-missing" class="alert alert-danger check-status" role="alert">
     The Info-Beamer Pi ({{pi-id}}) seems to be missing.
-</div>
-
-<div id="pi-error-device-offline" class="alert alert-danger check-status" role="alert">
-    The Info-Beamer Pi ({{pi-id}}) seems to be currently offline.
-</div>
-
-<div id="pi-error-device-not-synced" class="alert alert-danger check-status" role="alert">
-    The Info-Beamer Pi ({{pi-id}}) seems to be out of sync.
+    You might need to powercycle the device. (Or plug it in, first.)
 </div>
 
 <div id="pi-error-device-wrong-setup" class="alert alert-danger check-status" role="alert">
@@ -31,6 +25,18 @@
     The Info-Beamer Pi ({{pi-id}}) is running the setup "{{pi-setup-name}}" ({{pi-setup-id}}).
 </div>
 
+<div id="pi-warning-device-offline" class="alert alert-warning check-status" role="alert">
+    The Info-Beamer Pi ({{pi-id}}) seems to be currently offline.
+    You might need to powercycle the device. (Or plug it in, first.)
+</div>
+
+<div id="pi-warning-device-not-synced" class="alert alert-warning check-status" role="alert">
+    The Info-Beamer Pi ({{pi-id}}) seems to be out of sync.
+    Please wait a bit and then try re-checking.
+    If that doesn't help, you might need to powercycle the device.
+</div>
+
 <div id="network-error" class="alert alert-danger check-status" role="alert">
     A network error occurred (reason: "{{network-error-reason}}").
+    Please check your network connection.
 </div>

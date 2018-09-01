@@ -44,11 +44,6 @@ def infobeamer_check(config):
             },
             last_step="find-device"
         )
-    # Check if the device is online and synced.
-    if not device["is_online"]:
-        return result("error", data=device, last_step="check-device-online")
-    if not device["is_synced"]:
-        return result("error", data=device, last_step="check-device-synced")
     # Check if the right setup is running.
     if device["setup"]["id"] != int(config["info-beamer_background_setup_id"]):
         return result(
@@ -63,6 +58,11 @@ def infobeamer_check(config):
             },
             last_step="setup"
         )
+    # Check if the device is online and synced.
+    if not device["is_online"]:
+        return result("error", data=device, last_step="check-device-online")
+    if not device["is_synced"]:
+        return result("error", data=device, last_step="check-device-synced")
     return result("ok", data=device)
 
 
