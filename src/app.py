@@ -1,9 +1,12 @@
 from os import environ
+from datetime import date
 from flask import Flask, render_template, jsonify, request
 from flask_bootstrap import Bootstrap
 from dotenv import load_dotenv
 from configparser import ConfigParser
 from lib import infobeamer_check, infobeamer_assign_background_setup
+
+WIKI_URL_FORMAT = "https://wiki.chaosdorf.de/Freitagsfoo/{}"
 
 app = Flask(__name__)
 app.config["BOOTSTRAP_SERVE_LOCAL"] = True
@@ -40,3 +43,11 @@ def host_check_infobeamer():
         return jsonify(infobeamer_assign_background_setup(app.config))
     else:
         raise RuntimeError("should not be reached!")
+
+
+@app.route("/host/review_talks")
+def host_review_talks():
+    return render_template(
+        "host_review_talks.html",
+        wiki_link=WIKI_URL_FORMAT.format(date.today())
+    )

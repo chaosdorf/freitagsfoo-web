@@ -1,0 +1,23 @@
+{% extends "host_base.html" %}
+{% block title %}Review talks{% endblock %}
+{% block content %}
+<h1>Hosting a Freitagsfoo: Review talks</h1>
+
+<div class="alert alert-primary" role="alert">
+    You can turn on the projector now. (Remember to select "composite" input.)
+</div>
+
+<div class="alert alert-primary" role="alert">
+    You can prepare the speaker's desk now.
+</div>
+
+<p>
+    Here will be a list of the talks. Until then,
+    please refer to the <a href="{{ wiki_link }}" rel="noopener noreferrer" target="_blank">wiki</a>.
+</p>
+
+<div class="wizard-buttons">
+    <a href="{{ url_for("host_initial") }}" class="btn btn-secondary" role="button">Back</a>
+    <a href="#" class="btn btn-primary" role="button">Next: Something</a>
+</div>
+{% endblock %}
