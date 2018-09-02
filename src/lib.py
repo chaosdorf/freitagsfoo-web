@@ -4,8 +4,9 @@ from requests.exceptions import ConnectionError, HTTPError
 
 INFO_BEAMER_API = "https://info-beamer.com/api/v1/"
 session = Session()
-session.auth = ("", environ["INFO_BEAMER_API_KEY"])
 
+with open('/run/secrets/INFO_BEAMER_API_KEY') as f:
+    session.auth = ("", f.readline().strip())
 
 def result(status, *, data=None, reason=None, last_step=None):
     res = dict()

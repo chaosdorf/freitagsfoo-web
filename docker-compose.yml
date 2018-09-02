@@ -1,0 +1,26 @@
+version: '3.7'
+
+services:
+  app:
+    image: chaosdorf/freitagsfoo-web:latest
+    ports:
+      - '5000:5000'
+    configs:
+      - source: freitagsfoo.cfg
+        target: /etc/freitagsfoo.cfg
+    secrets:
+      - INFO_BEAMER_API_KEY
+    environment:
+      - FLASP_APP=app.py
+      - FLASK_ENV=development
+    volumes:
+      - ./src:/opt/app
+    entrypoint: /usr/local/bin/flask run --host=0.0.0.0
+
+configs:
+  freitagsfoo.cfg:
+    file: ./config.cfg
+
+secrets:
+  INFO_BEAMER_API_KEY:
+    file: ./info-beamer-api-key
