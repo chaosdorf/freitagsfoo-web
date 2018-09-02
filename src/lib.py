@@ -90,3 +90,17 @@ def _infobeamer_assign_setup(pi_id, setup_id):
     if not data.get("ok"):
         return result("error", last_step="assign-setup")
     return result("ok")
+
+
+def talks_begin(config):
+    return _infobeamer_assign_setup(
+        int(config["info-beamer_pi_id"]),
+        int(config["info-beamer_talks_setup_id"])
+    )
+
+
+def talks_end(config):
+    return _infobeamer_assign_setup(
+        int(config["info-beamer_pi_id"]),
+        int(config["info-beamer_background_setup_id"])
+    )

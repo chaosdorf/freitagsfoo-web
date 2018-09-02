@@ -4,7 +4,7 @@ from flask import Flask, render_template, jsonify, request
 from flask_bootstrap import Bootstrap
 from dotenv import load_dotenv
 from configparser import ConfigParser
-from lib import infobeamer_check, infobeamer_assign_background_setup
+from lib import infobeamer_check, infobeamer_assign_background_setup, talks_begin, talks_end
 
 WIKI_URL_FORMAT = "https://wiki.chaosdorf.de/Freitagsfoo/{}"
 
@@ -56,3 +56,13 @@ def host_review_talks():
 @app.route("/host/action")
 def host_action():
     return render_template("host_action.html")
+
+
+@app.route("/host/action/begin_talks", methods=("POST",))
+def host_action_begin_talks():
+    return jsonify(talks_begin(app.config))
+
+
+@app.route("/host/action/end_talks", methods=("POST",))
+def host_action_end_talks():
+    return jsonify(talks_end(app.config))
