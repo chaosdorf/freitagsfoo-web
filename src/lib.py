@@ -67,12 +67,17 @@ def infobeamer_check(config):
 
 
 def infobeamer_assign_background_setup(config):
+    return _infobeamer_assign_setup(
+        int(config["info-beamer_pi_id"]),
+        int(config["info-beamer_background_setup_id"])
+    )
+
+
+def _infobeamer_assign_setup(pi_id, setup_id):
     try:
         r = session.post(
-            INFO_BEAMER_API + "device/" + config["info-beamer_pi_id"],
-            data={
-                "setup_id": int(config["info-beamer_background_setup_id"]),
-            },
+            INFO_BEAMER_API + "device/" + str(pi_id),
+            data={"setup_id": setup_id},
         )
     except ConnectionError:
         return result("error", last_step="info-beamer.com")
