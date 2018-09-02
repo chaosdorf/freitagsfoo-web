@@ -105,6 +105,7 @@ venv.bak/
 
 # config files
 config.cfg
+info-beamer-api-key
 
 # Handlebars
 
