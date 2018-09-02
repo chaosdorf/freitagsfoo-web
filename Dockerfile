@@ -3,7 +3,7 @@ FROM node:slim as Builder
 RUN npm install handlebars -g
 WORKDIR /opt/app
 COPY src/ /opt/app/
-RUN mkdir /opt/app/static/templates \
+RUN mkdir -p /opt/app/static/templates \
     && handlebars /opt/app/client_templates/*.handlebars -f /opt/app/static/templates/*.js
 
 
