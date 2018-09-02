@@ -5,13 +5,46 @@
 
 <p>This is the main thing.</p>
 
-<button type="button" class="btn btn-primary btn-lg btn-block" onclick="doBegin()">Begin Talks</button>
-<button type="button" class="btn btn-secondary btn-lg btn-block" disabled>Begin Talk (not yet ready)</button>
-<button type="button" class="btn btn-secondary btn-lg btn-block" disabled>End Talk (not yet ready)</button>
-<button type="button" class="btn btn-primary btn-lg btn-block" onclick="doEnd()">End Talks</button>
+<div id="error-info-beamer" class="alert alert-danger action-status" role="alert">
+    Couldn't connect to
+    <a href="https://info-beamer.com" rel="noopener noreferrer" target="_blank">info-beamer.com</a>.
+    Please check the connection to the internet.
+</div>
+
+<div id="begin-talks-error-assign-setup" class="alert alert-danger action-status" role="alert">
+    Couldn't assign setup the setup for talks to the Info-Beamer Pi.
+    <a href="#" onclick="doBegin()" class="alert-link">Retry?</a>
+</div>
+
+<div id="begin-talks-success" class="alert alert-success action-status" role="alert">
+    The talks can begin now!<br />
+    Successfully assigned the setup for talks to the Info-Beamer Pi.
+</div>
+
+<div id="end-talks-error-assign-setup" class="alert alert-danger action-status" role="alert">
+    Couldn't assign the background setup to the Info-Beamer Pi.
+    <a href="#" onclick="doEnd()" class="alert-link">Retry?</a>
+</div>
+
+<div id="end-talks-success" class="alert alert-success action-status" role="alert">
+    You're mostly done.<br />
+    Successfully assigned the background setup to the Info-Beamer Pi.
+</div>
+
+<div id="network-error" class="alert alert-danger action-status" role="alert">
+    A network error occurred.
+    Please check your network connection.
+</div>
+
+<button id="begin-talks-button" type="button" class="btn btn-primary btn-lg btn-block" onclick="doBegin()">Begin Talks</button>
+<button id="begin-talk-button" type="button" class="btn btn-secondary btn-lg btn-block" disabled>Begin Talk (not yet ready)</button>
+<button id="end-talk-button" type="button" class="btn btn-secondary btn-lg btn-block" disabled>End Talk (not yet ready)</button>
+<button id="end-talks-button" type="button" class="btn btn-primary btn-lg btn-block" onclick="doEnd()">End Talks</button>
 
 <div class="wizard-buttons mt-3">
     <a href="{{ url_for("host_review_talks") }}" class="btn btn-secondary" role="button">Back</a>
     <a href="#" class="btn btn-primary" role="button">Next: Something</a>
 </div>
+
+<script type="text/javascript" src="/static/host_action.js"></script>
 {% endblock %}

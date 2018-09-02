@@ -11,3 +11,7 @@ div.wizard-buttons {
 div.check-status {
     display: none;
 }
+
+div.action-status {
+    display: none;
+}
