@@ -1,11 +1,15 @@
-from os import environ
+from os import environ, path
 from requests import Session
 from requests.exceptions import ConnectionError, HTTPError
 
 INFO_BEAMER_API = "https://info-beamer.com/api/v1/"
 session = Session()
 
-with open('/run/secrets/INFO_BEAMER_API_KEY') as f:
+if path.exists("info-beamer-api-key"):
+    file_name = "info-beamer-api-key"
+else:
+    file_name = "/run/secrets/INFO_BEAMER_API_KEY"
+with open(file_name) as f:
     session.auth = ("", f.readline().strip())
 
 def result(status, *, data=None, reason=None, last_step=None):
