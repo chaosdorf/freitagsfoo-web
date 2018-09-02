@@ -4,7 +4,7 @@ from flask import Flask, render_template, jsonify, request
 from flask_bootstrap import Bootstrap
 from dotenv import load_dotenv
 from configparser import ConfigParser
-from lib import infobeamer_check, infobeamer_assign_background_setup, talks_begin, talks_end
+import lib
 
 WIKI_URL_FORMAT = "https://wiki.chaosdorf.de/Freitagsfoo/{}"
 
@@ -39,9 +39,9 @@ def host_check():
 @app.route("/host/check/info-beamer", methods=("GET", "POST"))
 def host_check_infobeamer():
     if request.method == "GET":
-        return jsonify(infobeamer_check(app.config))
+        return jsonify(lib.infobeamer_check(app.config))
     elif request.method == "POST":
-        return jsonify(infobeamer_assign_background_setup(app.config))
+        return jsonify(lib.infobeamer_assign_background_setup(app.config))
     else:
         raise RuntimeError("should not be reached!")
 
@@ -61,9 +61,9 @@ def host_action():
 
 @app.route("/host/action/begin_talks", methods=("POST",))
 def host_action_begin_talks():
-    return jsonify(talks_begin(app.config))
+    return jsonify(lib.talks_begin(app.config))
 
 
 @app.route("/host/action/end_talks", methods=("POST",))
 def host_action_end_talks():
-    return jsonify(talks_end(app.config))
+    return jsonify(lib.talks_end(app.config))
