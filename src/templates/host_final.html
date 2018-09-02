@@ -1,0 +1,16 @@
+{% extends "host_base.html" %}
+{% block title %}Final{% endblock %}
+{% block content %}
+<h1>Hosting a Freitagsfoo: Final</h1>
+
+<p>You're done!</p>
+
+<div class="alert alert-primary" role="alert">
+    Remember to turn off the projector and put away the speaker's desk.
+</div>
+
+<div class="wizard-buttons">
+    <a href="{{ url_for("host_action") }}" class="btn btn-secondary" role="button">Back</a>
+    <a href="#" class="btn btn-secondary disabled" role="button" aria-disabled="true">Next</a>
+</div>
+{% endblock %}

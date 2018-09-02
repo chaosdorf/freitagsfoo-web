@@ -67,3 +67,8 @@ def host_action_begin_talks():
 @app.route("/host/action/end_talks", methods=("POST",))
 def host_action_end_talks():
     return jsonify(lib.talks_end(app.config))
+
+
+@app.route("/host/final")
+def host_final():
+    return render_template("host_final.html")
