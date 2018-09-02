@@ -1,0 +1,17 @@
+{% extends "host_base.html" %}
+{% block title %}Action{% endblock %}
+{% block content %}
+<h1>Hosting a Freitagsfoo: Action</h1>
+
+<p>This is the main thing.</p>
+
+<button type="button" class="btn btn-primary btn-lg btn-block" onclick="doBegin()">Begin Talks</button>
+<button type="button" class="btn btn-secondary btn-lg btn-block" disabled>Begin Talk (not yet ready)</button>
+<button type="button" class="btn btn-secondary btn-lg btn-block" disabled>End Talk (not yet ready)</button>
+<button type="button" class="btn btn-primary btn-lg btn-block" onclick="doEnd()">End Talks</button>
+
+<div class="wizard-buttons mt-3">
+    <a href="{{ url_for("host_review_talks") }}" class="btn btn-secondary" role="button">Back</a>
+    <a href="#" class="btn btn-primary" role="button">Next: Something</a>
+</div>
+{% endblock %}

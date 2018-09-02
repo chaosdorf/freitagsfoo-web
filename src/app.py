@@ -51,3 +51,8 @@ def host_review_talks():
         "host_review_talks.html",
         wiki_link=WIKI_URL_FORMAT.format(date.today())
     )
+
+
+@app.route("/host/action")
+def host_action():
+    return render_template("host_action.html")
