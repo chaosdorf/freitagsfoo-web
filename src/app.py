@@ -25,6 +25,7 @@ Bootstrap(app)
 def hello():
     return render_template("index.html")
 
+
 @app.route("/host")
 def host_initial():
     return render_template("host_initial.html")
