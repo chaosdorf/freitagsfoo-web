@@ -1,7 +1,8 @@
-from os import environ
+from os import environ, path
 from datetime import date
 from flask import Flask, render_template, jsonify, request
 from flask_bootstrap import Bootstrap
+from raven.contrib.flask import Sentry
 from dotenv import load_dotenv
 from configparser import ConfigParser
 import lib
@@ -19,6 +20,16 @@ for section in config_parser.sections():
         config["_".join((section, option))] = config_parser[section][option]
 app.config.update(config)
 Bootstrap(app)
+
+if app.env == "development":
+    print("Not enabling Sentry in development.")
+else:
+    if path.exists("sentry-python-dsn"):
+        file_name = "sentry-python-dsn"
+    else:
+        file_name = "/run/secrets/FFTALKS_SENTRY_PYTHON_DSN"
+    with open(file_name) as f:
+        sentry = Sentry(app, dsn=f.readline().strip())
 
 
 @app.route("/")

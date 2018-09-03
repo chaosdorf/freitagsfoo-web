@@ -9,6 +9,7 @@ python-dotenv = "==0.9.1"
 Flask = "==1.0.2"
 Bootstrap-Flask = "==1.0.6"
 gunicorn = "*"
+raven = {version = "*", extras = ["flask"]}
 
 [dev-packages]
 
