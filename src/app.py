@@ -1,4 +1,4 @@
-from os import environ, path
+from os import environ
 from datetime import date
 from flask import Flask, render_template, jsonify, request
 from flask_bootstrap import Bootstrap
@@ -24,12 +24,7 @@ Bootstrap(app)
 if app.env == "development":
     print("Not enabling Sentry in development.")
 else:
-    if path.exists("sentry-python-dsn"):
-        file_name = "sentry-python-dsn"
-    else:
-        file_name = "/run/secrets/FFTALKS_SENTRY_PYTHON_DSN"
-    with open(file_name) as f:
-        sentry = Sentry(app, dsn=f.readline().strip())
+    sentry = Sentry(app, dsn=lib.read_secret("FFTALKS_SENTRY_PYTHON_DSN"))
 
 
 @app.route("/")
