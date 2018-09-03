@@ -23,8 +23,15 @@ Bootstrap(app)
 
 if app.env == "development":
     print("Not enabling Sentry in development.")
+    js_sentry_dsn = None
 else:
     sentry = Sentry(app, dsn=lib.read_secret("FFTALKS_SENTRY_PYTHON_DSN"))
+    js_sentry_dsn = lib.read_secret("FFTALKS_SENTRY_JS_DSN")
+
+
+@app.context_processor
+def inject_js_sentry_dsn():
+    return {"sentry_dsn": js_sentry_dsn}
 
 
 @app.route("/")

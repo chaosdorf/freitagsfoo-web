@@ -107,6 +107,7 @@ venv.bak/
 config.cfg
 info-beamer-api-key
 sentry-python-dsn
+sentry-js-dsn
 
 # Handlebars
 

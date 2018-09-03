@@ -7,6 +7,10 @@
         <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     </head>
     <body>
+        {% if sentry_dsn %}
+        <script type="text/javascript" src="/static/raven.js"></script>
+        <script type="text/javascript">Raven.config("{{ sentry_dsn }}").install();</script>
+        {% endif %}
         <script type="text/javascript" src="/static/handlebars.runtime.js"></script>
         <nav class="navbar navbar-expand-md navbar-light fixed-top bg-light">
             <a class="navbar-brand" href="#">
