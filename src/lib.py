@@ -44,7 +44,7 @@ def infobeamer_check(config):
         return result("error", last_step="info-beamer.com")
     # Find the right device.
     for dev in data["devices"]:
-        if dev["uuid"] == config["info-beamer_pi_uuid"]:
+        if dev["id"] == int(config["info-beamer_pi_id"]):
             device = dev
             break
     else:
@@ -52,7 +52,6 @@ def infobeamer_check(config):
             "error",
             data={
                 "id": int(config["info-beamer_pi_id"]),
-                "uuid": config["info-beamer_pi_uuid"],
             },
             last_step="find-device"
         )
