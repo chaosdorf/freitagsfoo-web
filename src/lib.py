@@ -44,27 +44,27 @@ def infobeamer_check(config):
         return result("error", last_step="info-beamer.com")
     # Find the right device.
     for dev in data["devices"]:
-        if dev["id"] == int(config["info-beamer_pi_id"]):
+        if dev["id"] == int(config["INFO-BEAMER_pi-id"]):
             device = dev
             break
     else:
         return result(
             "error",
             data={
-                "id": int(config["info-beamer_pi_id"]),
+                "id": int(config["INFO-BEAMER_pi-id"]),
             },
             last_step="find-device"
         )
     # Check if the right setup is running.
-    if device["setup"]["id"] != int(config["info-beamer_background_setup_id"]):
+    if device["setup"]["id"] != int(config["INFO-BEAMER_background-setup-id"]):
         return result(
             "error",
             data={
                 "device": device,
                 "actual": device["setup"],
                 "expected": {
-                    "id": int(config["info-beamer_background_setup_id"]),
-                    "name": config["info-beamer_background_setup_name"],
+                    "id": int(config["INFO-BEAMER_background-setup-id"]),
+                    "name": config["INFO-BEAMER_background-setup-name"],
                 },
             },
             last_step="setup"
@@ -79,8 +79,8 @@ def infobeamer_check(config):
 
 def infobeamer_assign_background_setup(config):
     return _infobeamer_assign_setup(
-        int(config["info-beamer_pi_id"]),
-        int(config["info-beamer_background_setup_id"])
+        int(config["INFO-BEAMER_pi-id"]),
+        int(config["INFO-BEAMER_background-setup-id"])
     )
 
 
@@ -105,13 +105,13 @@ def _infobeamer_assign_setup(pi_id, setup_id):
 
 def talks_begin(config):
     return _infobeamer_assign_setup(
-        int(config["info-beamer_pi_id"]),
-        int(config["info-beamer_talks_setup_id"])
+        int(config["INFO-BEAMER_pi-id"]),
+        int(config["INFO-BEAMER_talks-setup-id"])
     )
 
 
 def talks_end(config):
     return _infobeamer_assign_setup(
-        int(config["info-beamer_pi_id"]),
-        int(config["info-beamer_background_setup_id"])
+        int(config["INFO-BEAMER_pi-id"]),
+        int(config["INFO-BEAMER_background-setup-id"])
     )
