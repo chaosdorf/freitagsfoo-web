@@ -40,6 +40,7 @@ def hello():
 
 
 @app.route("/host")
+@app.route("/host/")
 def host_initial():
     return render_template("host_initial.html")
 
