@@ -4,7 +4,7 @@ RUN npm install handlebars -g
 WORKDIR /opt/app
 COPY src/ /opt/app/
 RUN mkdir -p /opt/app/static/templates \
-    && handlebars /opt/app/client_templates/*.handlebars -f /opt/app/static/templates/*.js
+    && handlebars /opt/app/client_templates/host_check.handlebars -f /opt/app/static/templates/host_check.js
 
 
 FROM python:3.7-alpine
