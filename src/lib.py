@@ -1,4 +1,4 @@
-from os import path
+from os import path, environ
 from requests import Session
 from requests.exceptions import ConnectionError, HTTPError
 
@@ -10,6 +10,9 @@ def read_secret(name):
     lower = name.lower().replace("_", "-").replace("fftalks-", "", 1)
     if path.exists(lower):
         file_name = lower
+    elif environ.get(name):
+        print(f"WARN: Reading {name} from the environment; consider using secrets instead.")
+        return environ[name]
     else:
         file_name = "/run/secrets/" + name
     with open(file_name, "r") as f:
