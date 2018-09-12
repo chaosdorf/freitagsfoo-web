@@ -2,7 +2,6 @@ version: '3.7'
 
 services:
   app:
-    image: chaosdorf/freitagsfoo-web:latest
     build: .
     ports:
       - '5000:5000'
@@ -15,7 +14,7 @@ services:
       - FLASK_ENV=development
     volumes:
       - ./config.cfg:/etc/freitagsfoo-web.cfg:ro
-      - ./src:/opt/app
+      - ./src:/opt/app:ro
     entrypoint: /usr/local/bin/flask run --host=0.0.0.0
 
 secrets:
