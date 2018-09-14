@@ -1,10 +1,12 @@
-FROM node:slim as Builder
+FROM alpine as Builder
 
+RUN apk add --no-cache make npm
 RUN npm install handlebars -g
 WORKDIR /opt/app
 COPY src/ /opt/app/
 RUN mkdir -p /opt/app/static/templates \
-    && handlebars /opt/app/client_templates/host_check.handlebars -f /opt/app/static/templates/host_check.js
+    && cd /opt/app/client_templates \
+    && make
 
 
 FROM python:3.7-alpine
