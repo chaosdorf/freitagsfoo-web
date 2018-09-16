@@ -5,7 +5,8 @@ from flask_bootstrap import Bootstrap
 from raven.contrib.flask import Sentry
 from dotenv import load_dotenv
 from configparser import ConfigParser
-import lib
+import lib.base
+import lib.info_beamer
 
 WIKI_URL_FORMAT = "https://wiki.chaosdorf.de/Freitagsfoo/{}"
 
@@ -25,8 +26,8 @@ if app.env == "development":
     print("Not enabling Sentry in development.")
     js_sentry_dsn = None
 else:
-    sentry = Sentry(app, dsn=lib.read_secret("FFTALKS_SENTRY_PYTHON_DSN"))
-    js_sentry_dsn = lib.read_secret("FFTALKS_SENTRY_JS_DSN")
+    sentry = Sentry(app, dsn=lib.base.read_secret("FFTALKS_SENTRY_PYTHON_DSN"))
+    js_sentry_dsn = lib.base.read_secret("FFTALKS_SENTRY_JS_DSN")
 
 
 @app.context_processor
@@ -53,9 +54,9 @@ def host_check():
 @app.route("/host/check/info-beamer", methods=("GET", "POST"))
 def host_check_infobeamer():
     if request.method == "GET":
-        return jsonify(lib.infobeamer_check(app.config))
+        return jsonify(lib.info_beamer.infobeamer_check(app.config))
     elif request.method == "POST":
-        return jsonify(lib.infobeamer_assign_background_setup(app.config))
+        return jsonify(lib.info_beamer.infobeamer_assign_background_setup(app.config))
     else:
         raise RuntimeError("should not be reached!")
 
@@ -75,12 +76,12 @@ def host_action():
 
 @app.route("/host/action/begin_talks", methods=("POST",))
 def host_action_begin_talks():
-    return jsonify(lib.talks_begin(app.config))
+    return jsonify(lib.base.talks_begin(app.config))
 
 
 @app.route("/host/action/end_talks", methods=("POST",))
 def host_action_end_talks():
-    return jsonify(lib.talks_end(app.config))
+    return jsonify(lib.base.talks_end(app.config))
 
 
 @app.route("/host/final")

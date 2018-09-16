@@ -1,40 +1,12 @@
-from os import path, environ
 from requests import Session
 from requests.exceptions import ConnectionError, HTTPError
+from .base import read_secret, result
 
 INFO_BEAMER_API = "https://info-beamer.com/api/v1/"
 session = Session()
 
 
-def read_secret(name):
-    lower = name.lower().replace("_", "-").replace("fftalks-", "", 1)
-    if path.exists(lower):
-        file_name = lower
-    elif environ.get(name):
-        print(f"WARN: Reading {name} from the environment; consider using secrets instead.")
-        return environ[name]
-    else:
-        file_name = "/run/secrets/" + name
-    with open(file_name, "r") as f:
-        return f.readline().strip()
-
-
 session.auth = ("", read_secret("INFO_BEAMER_API_KEY"))
-
-
-def result(status, *, data=None, reason=None, last_step=None):
-    res = dict()
-    assert status in ("ok", "error")
-    res["status"] = status
-    if data:
-        res["data"] = data
-    if reason:
-        assert status == "error"
-        res["reason"] = reason
-    if last_step:
-        assert status == "error"
-        res["last_step"] = last_step
-    return res
 
 
 def infobeamer_check(config):
@@ -104,17 +76,3 @@ def _infobeamer_assign_setup(pi_id, setup_id):
     if not data.get("ok"):
         return result("error", last_step="assign-setup")
     return result("ok")
-
-
-def talks_begin(config):
-    return _infobeamer_assign_setup(
-        int(config["INFO-BEAMER_pi-id"]),
-        int(config["INFO-BEAMER_talks-setup-id"])
-    )
-
-
-def talks_end(config):
-    return _infobeamer_assign_setup(
-        int(config["INFO-BEAMER_pi-id"]),
-        int(config["INFO-BEAMER_background-setup-id"])
-    )
