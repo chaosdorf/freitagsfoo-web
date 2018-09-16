@@ -1,9 +1,9 @@
 FROM alpine as Builder
 
-RUN apk add --no-cache make npm
-RUN npm install handlebars -g
+RUN apk add --no-cache make npm yarn
 WORKDIR /opt/app
 COPY . /opt/app/
+RUN cd /opt/app && yarn
 RUN mkdir -p /opt/app/src/static/templates \
     && cd /opt/app/src/client_templates \
     && make

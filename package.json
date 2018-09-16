@@ -1,0 +1,13 @@
+{
+  "name": "freitagsfoo-web",
+  "version": "1.0.0",
+  "description": "webapp for managing Freitagsfoo talks",
+  "main": "index.js",
+  "repository": "https://github.com/chaosdorf/freitagsfoo-web/",
+  "license": "AGPL-3.0",
+  "private": true,
+  "dependencies": {
+    "handlebars": "^4.0.12",
+    "raven-js": "^3.27.0"
+  }
+}

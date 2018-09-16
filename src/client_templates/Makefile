@@ -1,4 +1,4 @@
 all: ../static/templates/host_check.js
 
 ../static/templates/%.js: %.handlebars
-	handlebars $< -f $@
+	../../node_modules/.bin/handlebars $< -f $@
