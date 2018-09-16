@@ -11,11 +11,11 @@ services:
       - FFTALKS_SENTRY_PYTHON_DSN
       - FFTALKS_SENTRY_JS_DSN
     environment:
-      - FLASP_APP=app.py
+      - FLASK_APP=src/app.py
       - FLASK_ENV=development
     volumes:
       - ./config.cfg:/etc/freitagsfoo-web.cfg:ro
-      - ./src:/opt/app:ro
+      - ./src:/opt/app/src:ro
     entrypoint: /usr/local/bin/flask run --host=0.0.0.0
 
 secrets:
