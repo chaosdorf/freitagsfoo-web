@@ -6,9 +6,8 @@ from raven.contrib.flask import Sentry
 from dotenv import load_dotenv
 from configparser import ConfigParser
 import lib.base
+import lib.talks
 import lib.info_beamer
-
-WIKI_URL_FORMAT = "https://wiki.chaosdorf.de/Freitagsfoo/{}"
 
 app = Flask(__name__)
 app.config["BOOTSTRAP_SERVE_LOCAL"] = True
@@ -40,6 +39,11 @@ def hello():
     return render_template("index.html")
 
 
+@app.route("/talks/list")
+def list_talks():
+    return jsonify(lib.talks.table(date.today()))
+
+
 @app.route("/host")
 @app.route("/host/")
 def host_initial():
@@ -65,7 +69,7 @@ def host_check_infobeamer():
 def host_review_talks():
     return render_template(
         "host_review_talks.html",
-        wiki_link=WIKI_URL_FORMAT.format(date.today())
+        wiki_link=lib.talks.WIKI_URL_FORMAT.format(date.today())
     )
 
 
