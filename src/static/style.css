@@ -15,3 +15,7 @@ div.check-status {
 div.action-status {
     display: none;
 }
+
+#talks-table {
+    display: none;
+}
