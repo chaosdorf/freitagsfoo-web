@@ -20,10 +20,8 @@ function fetchTable() {
     });
 }
 
-function renderTable(talks) {
-    let rendered = Handlebars.templates.talks({
-        "talks": talks
-    });
+function renderTable(data) {
+    let rendered = Handlebars.templates.talks(data);
     jQuery("#talks-container").html(rendered);
     jQuery("#talks-table").fadeIn();
 }

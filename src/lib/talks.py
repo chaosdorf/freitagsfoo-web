@@ -13,13 +13,13 @@ def table(date):
         r = session.get(JSON_URL)
         r.raise_for_status()
         data = r.json()
-        talks = data["talks"]
     except (ConnectionError, HTTPError, ValueError):
         return result("error", last_step="fetch-json")
-    for talk in talks:
+    data["wiki_link"] = WIKI_URL_FORMAT.format(data["date"])
+    for talk in data["talks"]:
         talk["wiki_link"] = WIKI_URL_FORMAT.format(
             str(date)
             + "#"
             + quote_plus(talk["title"]).replace("+", "_").replace("%", ".")
         )
-    return result("ok", data=talks)
+    return result("ok", data=data)
