@@ -15,6 +15,7 @@
 
 <div class="wizard-buttons">
     <a href="{{ url_for("host_check") }}" class="btn btn-secondary" role="button">Back</a>
+    <button id="refresh-button" type="button" class="btn btn-info" onclick="fetchTable()" disabled>Refresh</button>
     <a href="{{ url_for("host_action") }}" class="btn btn-primary" role="button">Next: Action</a>
 </div>
 <script type="text/javascript" src="/static/talks.js"></script>

@@ -2,6 +2,7 @@
 
 function fetchTable() {
     jQuery("#talks-table").fadeOut();
+    jQuery("#refresh-button").prop("disabled", true);
     jQuery.ajax("/talks/list").always(function(data, status) {
         if(status !== "success") {
             // TODO
@@ -17,6 +18,7 @@ function fetchTable() {
                     break;
             }
         }
+        jQuery("#refresh-button").prop("disabled", false);
     });
 }
 
