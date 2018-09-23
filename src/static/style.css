@@ -15,6 +15,10 @@ div.action-status {
     display: none;
 }
 
+div.talks-status {
+    display: none;
+}
+
 #talks-table {
     display: none;
 }
