@@ -2,6 +2,7 @@ from os import environ
 from datetime import date
 from flask import Flask, render_template, jsonify, request
 from flask_bootstrap import Bootstrap
+from dealer.contrib.flask import Dealer
 from raven.contrib.flask import Sentry
 from dotenv import load_dotenv
 from configparser import ConfigParser
@@ -20,6 +21,7 @@ for section in config_parser.sections():
         config["_".join((section, option))] = config_parser[section][option]
 app.config.update(config)
 Bootstrap(app)
+Dealer(app)
 
 if app.env == "development":
     print("Not enabling Sentry in development.")

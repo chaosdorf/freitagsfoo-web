@@ -27,6 +27,11 @@
         </nav>
         
         <main role="main" class="container">{% block content %}{% endblock %}</main>
+        <footer class="footer">
+            <div class="container">
+                <span class="text-muted">freitagsfoo-web <a href="https://github.com/chaosdorf/freitagsfoo-web/tree/{{ REVISION }}" rel="noopener noreferrer" target="_blank">{{ REVISION }}</a></span>
+            </div>
+        </footer>
         {{ bootstrap.load_js() }}
         <script type="text/javascript" src="/static/main.js"></script>
     </body>
