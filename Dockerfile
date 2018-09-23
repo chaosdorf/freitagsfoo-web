@@ -11,6 +11,7 @@ RUN mkdir -p /opt/app/src/static/templates \
 
 FROM python:3.7-alpine
 
+RUN apk add --no-cache git
 RUN pip install --no-cache-dir pipenv
 WORKDIR /opt/app
 COPY --from=Builder /opt/app .
