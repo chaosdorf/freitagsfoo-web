@@ -1,4 +1,5 @@
 {% extends "host_base.html" %}
+{% from "macros_talks.html" import talks_table %}
 {% block title %}Review talks{% endblock %}
 {% block content %}
 <h1>Hosting a Freitagsfoo: Review talks</h1>
@@ -11,17 +12,7 @@
     You can prepare the speaker's desk now.
 </div>
 
-<div id="network-error" class="alert alert-danger talks-status" role="alert">
-    Couldn't connect to the server.
-    Please check your network connection.
-</div>
-
-<div id="error-fetch" class="alert alert-danger talks-status" role="alert">
-    Couldn't fetch the talks data.
-    Please check the connection to the internet.
-</div>
-
-<div id="talks-container"></div>
+{{ talks_table() }}
 
 <div class="wizard-buttons">
     <a href="{{ url_for("host_check") }}" class="btn btn-secondary" role="button">Back</a>

@@ -1,19 +1,10 @@
 {% extends "public_base.html" %}
+{% from "macros_talks.html" import talks_table %}
 {% block title %}Home{% endblock %}
 {% block content %}
 <p>This Freitagsfoo, there will be the following talks:</p>
 
-<div id="network-error" class="alert alert-danger talks-status" role="alert">
-    Couldn't connect to the server.
-    Please check your network connection.
-</div>
-
-<div id="error-fetch" class="alert alert-danger talks-status" role="alert">
-    Couldn't fetch the talks data.
-    Please check the connection to the internet.
-</div>
-
-<div id="talks-container"></div>
+{{ talks_table() }}
 
 <div class="wizard-buttons">
     <button id="refresh-button" type="button" class="btn btn-info" onclick="fetchTable()" disabled>Refresh</button>
