@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "cf372fac67a44f80d0b0589ad1e21ee0e7fedc5b5dac6b4fe43d46f1b6d20006"
+            "sha256": "6df83cf0538aa3c597e80f8e0ca3b6051bda27f2d3ebbe7513f18466a60b37e0"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -24,11 +24,11 @@
         },
         "bootstrap-flask": {
             "hashes": [
-                "sha256:0a1bf3566b4e24081d9fca7ee5ff397abda7417ea4b03d2b40e7b2f5220201ab",
-                "sha256:6206380edaae7cfc9c90bb121d72239d7038e607037978cf6f8e51fb8a54dd13"
+                "sha256:402523733d8b68a77527c64d112619f59893143917309ea60bde525e41021cd7",
+                "sha256:49a8d10aa949ebe859113db7b855b5146e5e8e8cd74f7db3e3306bec50ee806c"
             ],
             "index": "pypi",
-            "version": "==1.0.6"
+            "version": "==1.0.8"
         },
         "certifi": {
             "hashes": [
@@ -46,10 +46,11 @@
         },
         "click": {
             "hashes": [
-                "sha256:29f99fc6125fbc931b758dc053b3114e55c77a6e4c6c3a2674a2dc986016381d",
-                "sha256:f15516df478d5a56180fbf80e68f206010e6d160fc39fa508b65e035fd75130b"
+                "sha256:2335065e6395b9e67ca716de5f7526736bfa6ceead690adf616d925bdc622b13",
+                "sha256:5b94b49521f6456670fdb30cd82a4eca9412788a93fa6dd6df72c94d5a8ff2d7"
             ],
-            "version": "==6.7"
+            "markers": "python_version != '3.1.*' and python_version != '3.0.*' and python_version != '3.2.*' and python_version != '3.3.*' and python_version >= '2.7'",
+            "version": "==7.0"
         },
         "dealer": {
             "hashes": [
@@ -130,7 +131,7 @@
                 "sha256:a68ac5e15e76e7e5dd2b8f94007233e01effe3e50e8daddf69acfd81cb686baf",
                 "sha256:b5725a0bd4ba422ab0e66e89e030c806576753ea3ee08554382c14e685d117b5"
             ],
-            "markers": "python_version != '3.1.*' and python_version >= '2.6' and python_version < '4' and python_version != '3.2.*' and python_version != '3.3.*' and python_version != '3.0.*'",
+            "markers": "python_version < '4' and python_version != '3.0.*' and python_version >= '2.6' and python_version != '3.2.*' and python_version != '3.3.*' and python_version != '3.1.*'",
             "version": "==1.23"
         },
         "werkzeug": {

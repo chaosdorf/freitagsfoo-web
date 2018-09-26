@@ -4,10 +4,10 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-requests = "==2.19.1"
-python-dotenv = "==0.9.1"
-Flask = "==1.0.2"
-Bootstrap-Flask = "==1.0.6"
+requests = "*"
+python-dotenv = "*"
+Flask = "*"
+Bootstrap-Flask = "*"
 gunicorn = "*"
 raven = {version = "*", extras = ["flask"]}
 dealer = "*"
