@@ -8,8 +8,7 @@ services:
       - '5000:5000'
     secrets:
       - INFO_BEAMER_API_KEY
-      - FFTALKS_SENTRY_PYTHON_DSN
-      - FFTALKS_SENTRY_JS_DSN
+      - FFTALKS_SENTRY_DSN
     environment:
       - FLASK_APP=src/app.py
       - FLASK_ENV=development
@@ -21,7 +20,5 @@ services:
 secrets:
   INFO_BEAMER_API_KEY:
     file: ./info-beamer-api-key
-  FFTALKS_SENTRY_PYTHON_DSN:
-    file: ./sentry-python-dsn
-  FFTALKS_SENTRY_JS_DSN:
-    file: ./sentry-js-dsn
+  FFTALKS_SENTRY_DSN:
+    file: ./sentry-dsn

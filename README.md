@@ -8,9 +8,8 @@ To run the flask development server:
 
 1. Copy `config.default.cfg` to `config.cfg` and fill in values.
 2. Add `info-beamer-api-key` file and fill in value.
-3. Add `sentry-python-dsn` file and fill in value.
-4. Add `sentry-js-dsn` file and fill in value.
-5. run `docker-compose up --build` to start the flask development server.
+3. Add `sentry-dsn` file and fill in value.
+4. run `docker-compose up --build` to start the flask development server.
 
 # Deployment
 
@@ -27,8 +26,7 @@ services:
         target: /etc/freitagsfoo.cfg
     secrets:
       - INFO_BEAMER_API_KEY
-      - FFTALKS_SENTRY_PYTHON_DSN
-      - FFTALKS_SENTRY_JS_DSN
+      - FFTALKS_SENTRY_DSN
 
 configs:
   freitagsfoo.cfg:
@@ -37,8 +35,6 @@ configs:
 secrets:
   INFO_BEAMER_API_KEY:
     [..]
-  FFTALKS_SENTRY_PYTHON_DSN:
-    [..]
-  FFTALKS_SENTRY_JS_DSN:
+  FFTALKS_SENTRY_DSN:
     [..]
 ```

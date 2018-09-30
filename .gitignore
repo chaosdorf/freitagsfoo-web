@@ -106,8 +106,7 @@ node_modules/
 # config files
 config.cfg
 info-beamer-api-key
-sentry-python-dsn
-sentry-js-dsn
+sentry-dsn
 
 # Handlebars
 
