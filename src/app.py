@@ -42,7 +42,7 @@ def inject_js_sentry_dsn():
 
 @app.route("/")
 def hello():
-    return render_template("index.html")
+    return render_template("index.html.j2")
 
 
 @app.route("/talks/list")
@@ -53,12 +53,12 @@ def list_talks():
 @app.route("/host")
 @app.route("/host/")
 def host_initial():
-    return render_template("host_initial.html")
+    return render_template("host_initial.html.j2")
 
 
 @app.route("/host/check")
 def host_check():
-    return render_template("host_check.html")
+    return render_template("host_check.html.j2")
 
 
 @app.route("/host/check/info-beamer", methods=("GET", "POST"))
@@ -74,14 +74,14 @@ def host_check_infobeamer():
 @app.route("/host/review_talks")
 def host_review_talks():
     return render_template(
-        "host_review_talks.html",
+        "host_review_talks.html.j2",
         wiki_link=lib.talks.WIKI_URL_FORMAT.format(date.today())
     )
 
 
 @app.route("/host/action")
 def host_action():
-    return render_template("host_action.html")
+    return render_template("host_action.html.j2")
 
 
 @app.route("/host/action/begin_talks", methods=("POST",))
@@ -96,4 +96,4 @@ def host_action_end_talks():
 
 @app.route("/host/final")
 def host_final():
-    return render_template("host_final.html")
+    return render_template("host_final.html.j2")
