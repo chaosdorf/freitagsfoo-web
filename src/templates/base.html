@@ -9,7 +9,11 @@
     <body>
         {% if sentry_dsn %}
         <script type="text/javascript" src="/static/raven.js"></script>
-        <script type="text/javascript">Raven.config("{{ sentry_dsn }}").install();</script>
+        <script type="text/javascript">
+            Raven.config("{{ sentry_dsn }}", {
+                release: "{{ REVISION }}"
+            }).install();
+        </script>
         {% endif %}
         <script type="text/javascript" src="/static/handlebars.runtime.js"></script>
         <nav class="navbar navbar-expand-md navbar-light fixed-top bg-light">

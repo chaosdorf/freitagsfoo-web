@@ -27,6 +27,10 @@ if app.env == "development":
     print("Not enabling Sentry in development.")
     js_sentry_dsn = None
 else:
+    sentry_cfg = app.config.get("SENTRY_CONFIG", dict())
+    sentry_cfg["release"] = app.revision
+    app.config["SENTRY_CONFIG"] = sentry_cfg
+    del sentry_cfg
     sentry = Sentry(app, dsn=lib.base.read_secret("FFTALKS_SENTRY_PYTHON_DSN"))
     js_sentry_dsn = lib.base.read_secret("FFTALKS_SENTRY_JS_DSN")
 
