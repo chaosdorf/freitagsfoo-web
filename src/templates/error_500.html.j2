@@ -8,5 +8,11 @@ Something crashed.
 
 {% if g.sentry_event_id -%}
 <small>The event ID is {{ g.sentry_event_id }}.</small>
+<script>
+    Raven.showReportDialog({
+        eventId: "{{ g.sentry_event_id }}",
+        dsn: "{{ sentry_dsn }}"
+    });
+</script>
 {%- endif %}
 {%- endblock %}
