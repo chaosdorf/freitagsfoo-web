@@ -1,35 +1,37 @@
-<table id="talks-table" class="table">
-    <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Title</th>
-            <th scope="col">Person(s)</th>
-            <th scope="col">Link to Wiki</th>
-        </tr>
-    </thead>
-    <tbody>
-        {{#each talks}}
-        <tr>
-            <th scope="row">{{@index}}</th>
-            <td>{{this.title}}</td>
-            <td>
-                <ul>
-                    {{#each this.persons}}
-                    <li>{{this}}</li>
-                    {{/each}}
-                </ul>
-            </td>
-            <td><a href="{{this.wiki_link}}" rel="noopener noreferrer" target="_blank">Link</a></td>
-        </tr>
-        {{else}}
-        <tr>
-          <td class="text-center text-muted" colspan="4">
-            Sadly, there are currently no talks. Why don't you go ahead and add one?
-          </td>
-        </tr>
-        {{/each}}
-    </tbody>
-</table>
+<div class="table-responsive">
+    <table id="talks-table" class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Title</th>
+                <th scope="col">Person(s)</th>
+                <th scope="col">Link to Wiki</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each talks}}
+            <tr>
+                <th scope="row">{{@index}}</th>
+                <td>{{this.title}}</td>
+                <td>
+                    <ul>
+                        {{#each this.persons}}
+                        <li>{{this}}</li>
+                        {{/each}}
+                    </ul>
+                </td>
+                <td><a href="{{this.wiki_link}}" rel="noopener noreferrer" target="_blank">Link</a></td>
+            </tr>
+            {{else}}
+            <tr>
+              <td class="text-center text-muted" colspan="4">
+                Sadly, there are currently no talks. Why don't you go ahead and add one?
+              </td>
+            </tr>
+            {{/each}}
+        </tbody>
+    </table>
+</div>
 <p>
     You might also want to see the <a href="{{wiki_link}}" rel="noopener noreferrer" target="_blank">wiki</a>.
 </p>
