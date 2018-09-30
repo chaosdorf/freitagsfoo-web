@@ -45,6 +45,11 @@ def error_404(error):
     return render_template("error_404.html.j2"), 404
 
 
+@app.errorhandler(500)
+def error_500(error):
+    return render_template("error_500.html.j2"), 500
+
+
 @app.route("/")
 def hello():
     return render_template("index.html.j2")

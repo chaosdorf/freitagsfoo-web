@@ -1,0 +1,12 @@
+{% extends "public_base.html.j2" %}
+{% from "macro_error.html.j2" import error %}
+{% block title %}500{% endblock %}
+{% block content -%}
+{% call error("500") -%}
+Something crashed.
+{%- endcall %}
+
+{% if g.sentry_event_id -%}
+<small>The event ID is {{ g.sentry_event_id }}.</small>
+{%- endif %}
+{%- endblock %}
