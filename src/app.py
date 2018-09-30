@@ -40,6 +40,11 @@ def inject_js_sentry_dsn():
     return {"sentry_dsn": js_sentry_dsn}
 
 
+@app.errorhandler(404)
+def error_404(error):
+    return render_template("error_404.html.j2"), 404
+
+
 @app.route("/")
 def hello():
     return render_template("index.html.j2")

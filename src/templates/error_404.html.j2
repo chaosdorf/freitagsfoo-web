@@ -1,0 +1,8 @@
+{% extends "public_base.html.j2" %}
+{% from "macro_error.html.j2" import error %}
+{% block title %}404{% endblock %}
+{% block content -%}
+{% call error("404") -%}
+The page you were looking for couldn't be found.
+{%- endcall %}
+{%- endblock %}

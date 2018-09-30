@@ -1,0 +1,8 @@
+{% extends "public_base.html.j2" %}
+{% macro error(title) -%}
+<div class="jumbotron">
+    <h1 class="display-4">{{ title }}</h1>
+    <hr class="my-4">
+    <p class="lead">{{ caller() }}</p>
+</div>
+{%- endmacro %}
