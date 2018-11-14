@@ -11,6 +11,7 @@ Bootstrap-Flask = "*"
 gunicorn = "*"
 raven = {version = "*", extras = ["flask"]}
 dealer = "*"
+"python-mpd2" = "*"
 
 [dev-packages]
 
