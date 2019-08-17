@@ -28,18 +28,20 @@ def result(status, *, data=None, reason=None, last_step=None):
     return res
 
 
-from .info_beamer import _infobeamer_assign_setup
+from .info_beamer import _infobeamer_send_command
 
 
 def talks_begin(config):
-    return _infobeamer_assign_setup(
+    return _infobeamer_send_command(
         int(config["INFO-BEAMER_pi-id"]),
-        int(config["INFO-BEAMER_talks-setup-id"])
+        "freitagsfoo/screen",
+        "title",
     )
 
 
 def talks_end(config):
-    return _infobeamer_assign_setup(
+    return _infobeamer_send_command(
         int(config["INFO-BEAMER_pi-id"]),
-        int(config["INFO-BEAMER_background-setup-id"])
+        "freitagsfoo/screen",
+        "initial"
     )

@@ -11,24 +11,24 @@
     Please check the connection to the internet.
 </div>
 
-<div id="begin-talks-error-assign-setup" class="alert alert-danger action-status" role="alert">
-    Couldn't assign setup the setup for talks to the Info-Beamer Pi.
+<div id="begin-talks-error-send-command" class="alert alert-danger action-status" role="alert">
+    Couldn't talk to the Info-Beamer Pi.
     <a href="#" onclick="doBegin()" class="alert-link">Retry?</a>
 </div>
 
 <div id="begin-talks-success" class="alert alert-success action-status" role="alert">
     The talks can begin now!<br />
-    Successfully assigned the setup for talks to the Info-Beamer Pi.
+    Successfully told the Info-Beamer Pi to fade to the title screen.
 </div>
 
-<div id="end-talks-error-assign-setup" class="alert alert-danger action-status" role="alert">
-    Couldn't assign the background setup to the Info-Beamer Pi.
+<div id="end-talks-send-command" class="alert alert-danger action-status" role="alert">
+    Couldn't talk to the Info-Beamer Pi.
     <a href="#" onclick="doEnd()" class="alert-link">Retry?</a>
 </div>
 
 <div id="end-talks-success" class="alert alert-success action-status" role="alert">
     You're mostly done.<br />
-    Successfully assigned the background setup to the Info-Beamer Pi.
+    Successfully told the Info-Beamer Pi to fade to the background on the next animation.<br />
 </div>
 
 <div id="network-error" class="alert alert-danger action-status" role="alert">
@@ -38,7 +38,7 @@
 
 <div class="btn-group btn-group-lg w-100 pb-1" role="group">
     <button id="begin-talks-button" type="button" class="btn btn-primary btn-block" onclick="doBegin()">Begin Talks</button>
-    <a tabindex="0" role="button" class="btn btn-info" data-toggle="popover" title="What does this button do?" data-content="<ul><li>assigns the talks setup to the Info-Beamer Pi</li></ul>">?</a>
+    <a tabindex="0" role="button" class="btn btn-info" data-toggle="popover" title="What does this button do?" data-content="<ul><li>tells the Info-Beamer Pi to fade to the title screen</li></ul>">?</a>
 </div>
 
 <div class="btn-group btn-group-lg w-100 pb-1" role="group">
@@ -53,7 +53,7 @@
 
 <div class="btn-group btn-group-lg w-100 pb-1" role="group">
     <button id="end-talks-button" type="button" class="btn btn-primary btn-block" onclick="doEnd()">End Talks</button>
-    <a tabindex="0" role="button" class="btn btn-info" data-toggle="popover" title="What does this button do?" data-content="<ul><li>assigns the background setup to the Info-Beamer Pi</li></ul>">?</a>
+    <a tabindex="0" role="button" class="btn btn-info" data-toggle="popover" title="What does this button do?" data-content="<ul><li>tells the Info-Beamer Pi to fade to the background</li></ul>">?</a>
 </div>
 
 <div class="wizard-buttons mt-3">

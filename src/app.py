@@ -77,7 +77,9 @@ def host_check_infobeamer():
     if request.method == "GET":
         return jsonify(lib.info_beamer.infobeamer_check(app.config))
     elif request.method == "POST":
-        return jsonify(lib.info_beamer.infobeamer_assign_background_setup(app.config))
+        return jsonify(
+            lib.info_beamer.infobeamer_assign_correct_setup(app.config)
+        )
     else:
         raise RuntimeError("should not be reached!")
 

@@ -15,8 +15,8 @@ function doBegin() {
                 case "info-beamer.com":
                     jQuery("#error-info-beamer").fadeIn();
                     break;
-                case "assign-setup":
-                    jQuery("#begin-talks-error-assign-setup").fadeIn();
+                case "send-command":
+                    jQuery("#begin-talks-error-send-command").fadeIn();
                     break;
             }
         }
@@ -39,8 +39,8 @@ function doEnd() {
                 case "info-beamer.com":
                     jQuery("#error-info-beamer").fadeIn();
                     break;
-                case "assign-setup":
-                    jQuery("#end-talks-error-assign-setup").fadeIn();
+                case "send-command":
+                    jQuery("#end-talks-error-send-command").fadeIn();
                     break;
             }
         }

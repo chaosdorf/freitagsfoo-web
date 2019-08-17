@@ -31,15 +31,15 @@ def infobeamer_check(config):
             last_step="find-device"
         )
     # Check if the right setup is running.
-    if device["setup"]["id"] != int(config["INFO-BEAMER_background-setup-id"]):
+    if device["setup"]["id"] != int(config["INFO-BEAMER_talks-setup-id"]):
         return result(
             "error",
             data={
                 "device": device,
                 "actual": device["setup"],
                 "expected": {
-                    "id": int(config["INFO-BEAMER_background-setup-id"]),
-                    "name": config["INFO-BEAMER_background-setup-name"],
+                    "id": int(config["INFO-BEAMER_talks-setup-id"]),
+                    "name": config["INFO-BEAMER_talks-setup-name"],
                 },
             },
             last_step="setup"
@@ -52,10 +52,10 @@ def infobeamer_check(config):
     return result("ok", data=device)
 
 
-def infobeamer_assign_background_setup(config):
+def infobeamer_assign_correct_setup(config):
     return _infobeamer_assign_setup(
         int(config["INFO-BEAMER_pi-id"]),
-        int(config["INFO-BEAMER_background-setup-id"])
+        int(config["INFO-BEAMER_talks-setup-id"])
     )
 
 
@@ -75,4 +75,23 @@ def _infobeamer_assign_setup(pi_id, setup_id):
         return result("error", last_step="info-beamer.com")
     if not data.get("ok"):
         return result("error", last_step="assign-setup")
+    return result("ok")
+
+
+def _infobeamer_send_command(pi_id, path, data):
+    try:
+        r = session.post(
+            INFO_BEAMER_API + "device/" + str(pi_id) + "/node/" + path,
+            data={"data": data},
+        )
+    except ConnectionError:
+        return result("error", last_step="info-beamer.com")
+    if not r.ok:
+        return result("error", last_step="send-command")
+    try:
+        data = r.json()
+    except ValueError:
+        return result("error", last_step="info-beamer.com")
+    if not data.get("ok"):
+        return result("error", last_step="send-command")
     return result("ok")
