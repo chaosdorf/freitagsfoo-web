@@ -5,28 +5,28 @@
 
 <p>This is the main thing.</p>
 
-<div id="error-info-beamer" class="alert alert-danger action-status" role="alert">
+<div id="error-info-beamer" class="alert alert-danger action-status action-status-info-beamer" role="alert">
     Couldn't connect to
     <a href="https://info-beamer.com" rel="noopener noreferrer" target="_blank">info-beamer.com</a>.
     Please check the connection to the internet.
 </div>
 
-<div id="begin-talks-error-send-command" class="alert alert-danger action-status" role="alert">
+<div id="begin-talks-error-send-command" class="alert alert-danger action-status action-status-info-beamer" role="alert">
     Couldn't talk to the Info-Beamer Pi.
-    <a href="#" onclick="doBegin()" class="alert-link">Retry?</a>
+    <a href="#" onclick="doBeginInfoBeamer()" class="alert-link">Retry?</a>
 </div>
 
-<div id="begin-talks-success" class="alert alert-success action-status" role="alert">
+<div id="begin-talks-info-beamer-success" class="alert alert-success action-status action-status-info-beamer" role="alert">
     The talks can begin now!<br />
     Successfully told the Info-Beamer Pi to fade to the title screen.
 </div>
 
-<div id="end-talks-send-command" class="alert alert-danger action-status" role="alert">
+<div id="end-talks-send-command" class="alert alert-danger action-status action-status-info-beamer" role="alert">
     Couldn't talk to the Info-Beamer Pi.
-    <a href="#" onclick="doEnd()" class="alert-link">Retry?</a>
+    <a href="#" onclick="doEndInfoBeamer()" class="alert-link">Retry?</a>
 </div>
 
-<div id="end-talks-success" class="alert alert-success action-status" role="alert">
+<div id="end-talks-info-beamer-success" class="alert alert-success action-status action-status-info-beamer" role="alert">
     You're mostly done.<br />
     Successfully told the Info-Beamer Pi to fade to the background on the next animation.<br />
 </div>
