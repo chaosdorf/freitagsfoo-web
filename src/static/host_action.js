@@ -3,12 +3,18 @@
 function doBegin() {
     jQuery(".action-status").fadeOut();
     jQuery("#begin-talks-button").prop("disabled", true);
-    jQuery.ajax("/host/action/begin_talks", {method: "POST"}).always(function(data, status){
+    doBeginInfoBeamer();
+}
+
+function doBeginInfoBeamer() {
+    jQuery(".action-status-info-beamer").fadeOut();
+    jQuery("#begin-talks-button").prop("disabled", true);
+    jQuery.ajax("/host/action/begin_talks/info_beamer", {method: "POST"}).always(function(data, status){
         if(status !== "success") {
             handleNetworkError(status);
         }
         else if(data["status"] === "ok") {
-            jQuery("#begin-talks-success").fadeIn();
+            jQuery("#begin-talks-info-beamer-success").fadeIn();
         }
         else if(data["status"] === "error") {
             switch(data["last_step"]) {
@@ -26,13 +32,18 @@ function doBegin() {
 
 function doEnd() {
     jQuery(".action-status").fadeOut();
+    doEndInfoBeamer();
+}
+
+function doEndInfoBeamer() {
+    jQuery(".action-status-info-beamer").fadeOut();
     jQuery("#end-talks-button").prop("disabled", true);
-    jQuery.ajax("/host/action/end_talks", {method: "POST"}).always(function(data, status){
+    jQuery.ajax("/host/action/end_talks/info_beamer", {method: "POST"}).always(function(data, status){
         if(status !== "success") {
             handleNetworkError(status);
         }
         else if(data["status"] === "ok") {
-            jQuery("#end-talks-success").fadeIn();
+            jQuery("#end-talks-info-beamer-success").fadeIn();
         }
         else if(data["status"] === "error") {
             switch(data["last_step"]) {

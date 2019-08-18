@@ -26,22 +26,3 @@ def result(status, *, data=None, reason=None, last_step=None):
         assert status == "error"
         res["last_step"] = last_step
     return res
-
-
-from .info_beamer import _infobeamer_send_command
-
-
-def talks_begin(config):
-    return _infobeamer_send_command(
-        int(config["INFO-BEAMER_pi-id"]),
-        "freitagsfoo/screen",
-        "title",
-    )
-
-
-def talks_end(config):
-    return _infobeamer_send_command(
-        int(config["INFO-BEAMER_pi-id"]),
-        "freitagsfoo/screen",
-        "initial"
-    )

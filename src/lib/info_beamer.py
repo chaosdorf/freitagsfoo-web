@@ -59,6 +59,22 @@ def infobeamer_assign_correct_setup(config):
     )
 
 
+def begin_talks(config):
+    return _infobeamer_send_command(
+        int(config["INFO-BEAMER_pi-id"]),
+        "freitagsfoo/screen",
+        "title",
+    )
+
+
+def end_talks(config):
+    return _infobeamer_send_command(
+        int(config["INFO-BEAMER_pi-id"]),
+        "freitagsfoo/screen",
+        "initial"
+    )
+
+
 def _infobeamer_assign_setup(pi_id, setup_id):
     try:
         r = session.post(
