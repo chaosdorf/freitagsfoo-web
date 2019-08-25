@@ -1,7 +1,6 @@
 from os import environ
 from datetime import date
 from flask import Flask, render_template, jsonify, request
-from flask_bootstrap import Bootstrap
 from dealer.contrib.flask import Dealer
 from raven.contrib.flask import Sentry
 from dotenv import load_dotenv
@@ -11,7 +10,6 @@ import lib.talks
 import lib.info_beamer
 
 app = Flask(__name__)
-app.config["BOOTSTRAP_SERVE_LOCAL"] = True
 load_dotenv()
 config = dict()
 config_parser = ConfigParser()
@@ -20,7 +18,6 @@ for section in config_parser.sections():
     for option in config_parser[section]:
         config["_".join((section, option))] = config_parser[section][option]
 app.config.update(config)
-Bootstrap(app)
 Dealer(app)
 
 if app.env == "development":

@@ -1,4 +1,6 @@
-"use strict";
+Vue.use(BootstrapVue);
+
+
 
 // initialize pop-overs
 jQuery(function () {

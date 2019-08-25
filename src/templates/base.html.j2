@@ -3,7 +3,8 @@
     <head>
         <title>{% block title %}{% endblock %} - Freitagsfoo</title>
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        {{ bootstrap.load_css() }}
+        <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css') }}">
+        <link rel="stylesheet" href="{{ url_for('static', filename='bootstrap-vue.min.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
     </head>
     <body>
@@ -36,7 +37,9 @@
                 <span class="text-muted">freitagsfoo-web <a href="https://github.com/chaosdorf/freitagsfoo-web/tree/{{ REVISION }}" rel="noopener noreferrer" target="_blank">{{ REVISION }}</a></span>
             </div>
         </footer>
-        {{ bootstrap.load_js() }}
-        <script type="text/javascript" src="/static/main.js"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='vue.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='jquery.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='bootstrap-vue.min.js') }}"></script>
+        <script type="text/javascript" src="{{ url_for('static', filename='main.js') }}"></script>
     </body>
 </html>
