@@ -7,9 +7,8 @@ name = "pypi"
 requests = "*"
 python-dotenv = "*"
 Flask = "*"
-Bootstrap-Flask = "*"
 gunicorn = "*"
-raven = {version = "*", extras = ["flask"]}
+raven = {version = "*",extras = ["flask"]}
 dealer = "*"
 
 [dev-packages]
