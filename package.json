@@ -7,7 +7,7 @@
   "license": "AGPL-3.0",
   "private": true,
   "dependencies": {
-    "handlebars": "^4.0.12",
+    "handlebars": "^4.3.0",
     "raven-js": "^3.27.0"
   }
 }
