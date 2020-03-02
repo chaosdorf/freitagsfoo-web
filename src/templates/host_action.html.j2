@@ -42,13 +42,22 @@
 </div>
 
 <div class="btn-group btn-group-lg w-100 pb-1" role="group">
+    <!-- TODO: pull a list of talks and let them being selected here -->
+    <div class="input-group input-group-lg">
+        <div class="input-group-prepend">
+            <span class="input-group-text" id="announce-talk-index-label">Index</span>
+        </div>
+        <input type="number" aria-label="Index" class="form-control" aria-describedby="announce-talk-index-label" name="announce-talk-index">
+    </div>
+    <button id="announce-talk-button" type="button" class="btn btn-primary btn-block">Announce Talk</button>
+    <a tabindex="0" role="button" class="btn btn-info" data-toggle="popover" title="What does this button do?" data-content="<ul><li>tell the Info-Beamer Pi to fade to the talk details screen</li></ul>">?</a>
     <button id="begin-talk-button" type="button" class="btn btn-secondary btn-block" disabled>Begin Talk (not yet ready)</button>
     <a tabindex="0" role="button" class="btn btn-info" data-toggle="popover" title="What does this button do?" data-content="Nothing.">?</a>
 </div>
 
 <div class="btn-group btn-group-lg w-100 pb-1" role="group">
-    <button id="end-talk-button" type="button" class="btn btn-secondary btn-block" disabled>End Talk (not yet ready)</button>
-    <a tabindex="0" role="button" class="btn btn-info" data-toggle="popover" title="What does this button do?" data-content="Nothing.">?</a>
+    <button id="end-talk-button" type="button" class="btn btn-primary btn-block">End Talk</button>
+    <a tabindex="0" role="button" class="btn btn-info" data-toggle="popover" title="What does this button do?" data-content="<ul><li>tell the Info-Beamer Pi to fade to the talk details screen</li></ul>">?</a>
 </div>
 
 <div class="btn-group btn-group-lg w-100 pb-1" role="group">
