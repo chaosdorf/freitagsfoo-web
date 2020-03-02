@@ -45,3 +45,25 @@ def talks_end(config):
         "freitagsfoo/screen",
         "initial"
     )
+
+
+def post_error(config, raven, data):
+    print("error posted:", data)
+    # figure out if this is a Python exception or a message from the Lua part
+    if "source" not in data.keys():
+        return result("error", reason="source is missing")
+    if data["source"] == "python":
+        # TODO: use strings, just pass the name
+        # and possibly the traceback in string representation?
+        if not ("exc_info" in data.keys() and "hostname" in data.keys()):
+            return result("error", reason="exc_info or hostname missing")
+        if raven is not None:
+            raven.captureException(
+                exc_info=data["exc_info"],
+                server_name=data["hostname"],
+            )
+        return result("ok")
+    elif data["source"] == "lua":
+        pass  # TODO
+    else:
+        return result("error", reason="invalid source")

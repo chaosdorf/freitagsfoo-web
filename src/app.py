@@ -110,3 +110,12 @@ def host_action_end_talks():
 @app.route("/host/final")
 def host_final():
     return render_template("host_final.html.j2")
+
+
+@app.route("/pi/error", methods=("POST",))
+def pi_error():
+    """Post an error to Sentry."""
+    data = request.json
+    return jsonify(lib.base.post_error(
+        app.config, getattr(sentry, "client", None), data
+    ))
