@@ -38,6 +38,27 @@ def talks_begin(config):
         "title",
     )
 
+def announce_talk(config, index):
+    result = _infobeamer_send_command(
+        int(config["INFO-BEAMER_pi-id"]),
+        "next_screen/talk_index",
+        str(index),
+    )
+    if result["status"] != "ok":
+        return result
+    return _infobeamer_send_command(
+        int(config["INFO-BEAMER_pi-id"]),
+        "freitagsfoo/screen",
+        "next",
+    )
+
+def list_talks(config):
+    return _infobeamer_send_command(
+        int(config["INFO-BEAMER_pi-id"]),
+        "freitagsfoo/screen",
+        "talks",
+    )
+
 
 def talks_end(config):
     return _infobeamer_send_command(

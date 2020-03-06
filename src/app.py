@@ -102,6 +102,17 @@ def host_action_begin_talks():
     return jsonify(lib.base.talks_begin(app.config))
 
 
+@app.route("/host/action/announce_talk", methods=("POST",))
+def host_announce_talk():
+    return jsonify(lib.base.announce_talk(
+        app.config, int(request.form["index"])
+    ))
+
+
+@app.route("/host/action/list_talks", methods=("POST",))
+def host_list_talks():
+    return jsonify(lib.base.list_talks(app.config))
+
 @app.route("/host/action/end_talks", methods=("POST",))
 def host_action_end_talks():
     return jsonify(lib.base.talks_end(app.config))
