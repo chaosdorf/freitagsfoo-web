@@ -2,13 +2,14 @@
 {% from "macros_talks.html.j2" import talks_table %}
 {% block title %}Home{% endblock %}
 {% block content %}
-<p>This Freitagsfoo, there will be the following talks:</p>
-
-{{ talks_table() }}
-
-<div class="wizard-buttons">
-    <button id="refresh-button" type="button" class="btn btn-info" onclick="fetchTable()" disabled>Refresh</button>
+<div id="talks">
+    <p>This Freitagsfoo, there will be the following talks:</p>
+    
+    {{ talks_table() }}
+    
+    <div class="wizard-buttons">
+        <button type="button" class="btn btn-info" v-on:click="fetchTable" v-bind:disabled="loading">Refresh</button>
+    </div>
 </div>
 <script type="text/javascript" src="/static/talks.js"></script>
-<script type="text/javascript" src="/static/templates/talks.min.js"></script>
 {% endblock %}

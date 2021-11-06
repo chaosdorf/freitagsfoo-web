@@ -1,35 +1,37 @@
 "use strict";
 
-function fetchTable() {
-    jQuery("#talks-table").fadeOut();
-    jQuery(".talks-status").fadeOut();
-    jQuery("#refresh-button").prop("disabled", true);
-    jQuery.ajax("/talks/list").always(function(data, status) {
-        if(status !== "success") {
-            handleNetworkError(status);
-        }
-        else if(data["status"] === "ok") {
-            renderTable(data["data"]);
-        }
-        else if(data["status"] === "error") {
-            switch(data["last_step"]) {
-                case "fetch-json":
-                    jQuery("#error-fetch").fadeIn();
-                    break;
+var talksApp = new Vue({
+    el: "#talks",
+    data: {
+        loading: true,
+        errors: [],
+        talks: [],
+        wiki_link: null
+    },
+    methods: {
+        fetchTable: function() {
+            this.loading = true;
+            this.errors = [];
+            jQuery.ajax("/talks/list").always(this.fetchTableCallback);
+        },
+        fetchTableCallback: function(data, status) {
+            if(status !== "success") {
+                this.errors.push("network");
             }
+            else if(data["status"] === "ok") {
+                this.talks = data["data"]["talks"];
+                this.wiki_link = data["data"]["wiki_link"];
+            }
+            else if(data["status"] === "error") {
+                switch(data["last_step"]) {
+                    case "fetch-json":
+                        this.errors.push("fetch");
+                        break;
+                }
+            }
+            this.loading = false;
         }
-        jQuery("#refresh-button").prop("disabled", false);
-    });
-}
+    }
+});
 
-function renderTable(data) {
-    let rendered = Handlebars.templates.talks(data);
-    jQuery("#talks-container").html(rendered);
-    jQuery("#talks-table").fadeIn();
-}
-
-function handleNetworkError(status) {
-    jQuery("#network-error").fadeIn();
-}
-
-window.onload = fetchTable;
+window.onload = talksApp.fetchTable;

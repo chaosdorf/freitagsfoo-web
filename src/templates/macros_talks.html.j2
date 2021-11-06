@@ -1,13 +1,52 @@
 {% macro talks_table() -%}
-<div id="network-error" class="alert alert-danger talks-status" role="alert">
+{% raw -%}
+<div v-if="errors.includes('network')" class="alert alert-danger talks-status" role="alert">
     Couldn't connect to the server.
     Please check your network connection.
 </div>
 
-<div id="error-fetch" class="alert alert-danger talks-status" role="alert">
+<div v-if="errors.includes('fetch')" class="alert alert-danger talks-status" role="alert">
     Couldn't fetch the talks data.
     Please check the connection to the internet.
 </div>
 
-<div id="talks-container"></div>
+<div class="table-responsive">
+    <table id="talks-table" class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Title</th>
+                <th scope="col">Person(s)</th>
+                <th scope="col">Link to Wiki</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr v-for="(talk, index) in talks" v-bind:key="index">
+                <th scope="row"> {{ index }}</th>
+                <td>{{ talk.title }}</td>
+                <td>
+                    <ul>
+                        <li v-for="person in talk.persons" v-bind:key="index + person">
+                            {{ person }}
+                        </li>
+                    </ul>
+                </td>
+                <td>
+                        <a v-bind:href="talk.wiki_link" rel="noopener noreferrer" target="_blank">Link</a>
+                </td>
+            </tr>
+            <tr v-if="!talks.length">
+              <td class="text-center text-muted" colspan="4">
+                Sadly, there are currently no talks. Why don't you go ahead and add one?
+              </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<p>
+    You might also want to see the <a v-bind:href="wiki_link" rel="noopener noreferrer" target="_blank">wiki</a>.
+</p>
+
+
+{%- endraw %}
 {%- endmacro %}

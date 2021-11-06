@@ -1,4 +1,4 @@
-all: ../static/templates/talks.js ../static/templates/talks.min.js
+all: Makefile
 
 ../static/templates/%.min.js: %.handlebars
 	../../node_modules/.bin/handlebars $< --output $@ --min
