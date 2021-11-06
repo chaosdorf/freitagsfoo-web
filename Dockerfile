@@ -6,10 +6,6 @@ RUN mkdir -p ./src
 COPY package.json ./
 COPY yarn.lock ./
 RUN cd /opt/app && yarn
-COPY src/client_templates ./src/client_templates
-RUN mkdir -p ./src/static/templates \
-    && cd ./src/client_templates \
-    && make
 
 
 FROM python:3.7-alpine
