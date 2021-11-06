@@ -4,13 +4,57 @@
 <h1>Hosting a Freitagsfoo: Check</h1>
 <p>Checking stuff...</p>
 
-<div id="check-status-container"></div>
+{% raw -%}
+<div id="check-status">
+    <div v-if="piErrors.includes('infoBeamer')" class="alert alert-danger check-status" role="alert">
+        Couldn't connect to
+        <a href="https://info-beamer.com" rel="noopener noreferrer" target="_blank">info-beamer.com</a>.
+        Please check the connection to the internet.
+    </div>
 
-<div class="wizard-buttons">
-    <a href="{{ url_for("host_initial") }}" class="btn btn-secondary" role="button">Back</a>
-    <button id="recheck-button" type="button" class="btn btn-info" onclick="doCheck()" disabled>Re-Check</button>
-    <a href="{{ url_for("host_review_talks") }}" class="btn btn-primary" role="button">Next: Review talks</a>
+    <div v-if="piErrors.includes('deviceMissing')" class="alert alert-danger check-status" role="alert">
+        The Info-Beamer Pi ({{ piId }}) seems to be missing.
+        You might need to powercycle the device. (Or plug it in, first.)
+    </div>
+
+    <div v-if="piErrors.includes('deviceWrongSetup')" class="alert alert-danger check-status" role="alert">
+        The Info-Beamer Pi ({{ piId }}) is running the wrong setup:
+        "{{ piSetupName }}" ({{ piSetupId }}) instead of
+        "{{ piExpectedSetupName }}" ({{ piExpectedSetupId }}).
+        <a v-on:click="piChangeSetup" class="alert-link">Change to {{ piExpectedSetupName }}?</a>
+    </div>
+
+    <div v-if="piErrors.includes('assignSetup')" class="alert alert-danger check-status" role="alert">
+        Couldn't assign setup "{{ piSetupName }}" ({{ piSetupId }}) to the Info-Beamer Pi ({{ piId }}).
+        <a v-on:click="piChangeSetup" class="alert-link">Retry?</a>
+    </div>
+
+    <div v-if="!checking && !piErrors.length && !networkErrors.length" class="alert alert-success check-status" role="alert">
+        The Info-Beamer Pi ({{ piId }}) is running the setup "{{ piSetupName }}" ({{ piSetupId }}). (Yes, that's correct.)
+    </div>
+
+    <div v-if="piWarnings.includes('deviceOffline')" class="alert alert-warning check-status" role="alert">
+        The Info-Beamer Pi ({{ piId }}) seems to be currently offline.
+        You might need to powercycle the device. (Or plug it in, first.)
+    </div>
+
+    <div v-if="piWarnings.includes('deviceNotSynced')" class="alert alert-warning check-status" role="alert">
+        The Info-Beamer Pi ({{ piId }}) seems to be out of sync.
+        Please wait a bit and then try re-checking.
+        If that doesn't help, you might need to powercycle the device.
+    </div>
+
+    <div v-if="networkErrors.length" class="alert alert-danger check-status" role="alert">
+        A network error occurred (reason: "{{ networkErrors }}").
+        Please check your network connection.
+    </div>
+{%- endraw %}
+
+    <div class="wizard-buttons">
+        <a href="{{ url_for("host_initial") }}" class="btn btn-secondary" role="button">Back</a>
+        <button type="button" class="btn btn-info" v-on:click="doCheck" v-bind:disabled="checking">Re-Check</button>
+        <a href="{{ url_for("host_review_talks") }}" class="btn btn-primary" role="button">Next: Review talks</a>
+    </div>
 </div>
 <script type="text/javascript" src="/static/host_check.js"></script>
-<script type="text/javascript" src="/static/templates/host_check.min.js"></script>
 {% endblock %}
