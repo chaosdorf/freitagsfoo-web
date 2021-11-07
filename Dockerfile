@@ -18,7 +18,6 @@ COPY Pipfile.lock ./
 RUN pipenv install --system --deploy
 COPY . ./
 COPY --from=Builder /opt/app/node_modules ./node_modules
-COPY --from=Builder /opt/app/src/static/templates ./src/static/templates
 COPY config.default.cfg /etc/freitagsfoo-web.cfg
 
 ENV CONFIG_FILE /etc/freitagsfoo-web.cfg
