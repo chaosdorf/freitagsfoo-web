@@ -4,3 +4,6 @@ background-setup-id = 1234
 background-setup-name = "foo"
 talks-setup-id = 5678
 talks-setup-name = "footalks"
+
+[REDIS]
+URL = "redis://redis:6379/0"

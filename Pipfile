@@ -11,6 +11,7 @@ gunicorn = "*"
 raven = {version = "*",extras = ["flask"]}
 dealer = "*"
 toml = "*"
+flask-redis = "*"
 
 [dev-packages]
 

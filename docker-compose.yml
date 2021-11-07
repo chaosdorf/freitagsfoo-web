@@ -16,6 +16,8 @@ services:
       - ./config.toml:/etc/freitagsfoo-web.toml:ro
       - ./src:/opt/app/src:ro
     entrypoint: /usr/local/bin/flask run --host=0.0.0.0
+  redis:
+    image: redis:6-alpine
 
 secrets:
   INFO_BEAMER_API_KEY:

@@ -59,6 +59,12 @@ var checkApp = new Vue({
                         this.piSetupName = data["data"]["setup"]["name"];
                         this.piSetupId = data["data"]["setup"]["id"];
                         break;
+                    case "state":
+                        this.piWarnings.push("stateUnknown");
+                        this.piId = data["data"]["id"];
+                        this.piSetupName = data["data"]["setup"]["name"];
+                        this.piSetupId = data["data"]["setup"]["id"];
+                        break;
                 }
             }
             this.checking = false;
@@ -85,6 +91,29 @@ var checkApp = new Vue({
                     }
                 }
             });
+        },
+        piResetState: function() {
+            this.reset();
+            jQuery.ajax("/host/check/info-beamer", {method: "PATCH"})
+            .always(this.piResetStateCallback);
+        },
+        piResetStateCallback: function(data, status) {
+            if(status !== "success") {
+                this.networkErrors.push(status);
+            }
+            else if(data["status"] === "ok") {
+                this.doCheckPi();
+            }
+            else if(data["status"] === "error") {
+                switch(data["last_step"]) {
+                    case "info-beamer.com":
+                        this.piErrors.push("infoBeamer");
+                        break;
+                    case "send-command":
+                        this.piErrors.push("resetState");
+                }
+            }
+            this.checking = false;
         },
         reset: function() {
             this.checking = true;

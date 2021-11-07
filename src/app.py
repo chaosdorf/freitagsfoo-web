@@ -3,6 +3,7 @@ from datetime import date
 from flask import Flask, render_template, jsonify, request
 from dealer.contrib.flask import Dealer
 from raven.contrib.flask import Sentry
+from flask_redis import FlaskRedis
 from dotenv import load_dotenv
 import toml
 import lib.base
@@ -18,6 +19,7 @@ for section in config_file.keys():
         config["_".join((section, option))] = config_file[section][option]
 app.config.update(config)
 Dealer(app)
+redis_client = FlaskRedis(app)
 
 if app.env == "development":
     print("Not enabling Sentry in development.")
@@ -68,14 +70,18 @@ def host_check():
     return render_template("host_check.html.j2")
 
 
-@app.route("/host/check/info-beamer", methods=("GET", "POST"))
+@app.route("/host/check/info-beamer", methods=("GET", "POST", "PATCH"))
 def host_check_infobeamer():
     if request.method == "GET":
-        return jsonify(lib.info_beamer.infobeamer_check(app.config))
+        return jsonify(lib.info_beamer.infobeamer_check(
+            app.config, redis_client,
+        ))
     elif request.method == "POST":
-        return jsonify(
-            lib.info_beamer.infobeamer_assign_correct_setup(app.config)
-        )
+        return jsonify(lib.info_beamer.infobeamer_assign_correct_setup(
+            app.config, redis_client,
+        ))
+    elif request.method == "PATCH":
+        return jsonify(lib.info_beamer.end_talks(app.config, redis_client))
     else:
         raise RuntimeError("should not be reached!")
 
@@ -90,29 +96,29 @@ def host_action():
 
 @app.route("/host/action/info_beamer/state", methods=("GET",))
 def host_action_info_beamer_state():
-    return jsonify(lib.info_beamer.get_state())
-
+    return jsonify(lib.info_beamer.get_state(redis_client))
 
 
 @app.route("/host/action/begin_talks/info_beamer", methods=("POST",))
 def host_action_begin_talks():
-    return jsonify(lib.info_beamer.begin_talks(app.config))
+    return jsonify(lib.info_beamer.begin_talks(app.config, redis_client))
 
 
 @app.route("/host/action/announce_talk/info_beamer", methods=("POST",))
 def host_announce_talk():
     return jsonify(lib.base.announce_talk(
-        app.config, int(request.form["index"])
+        app.config, redis_client, int(request.form["index"])
     ))
 
 
 @app.route("/host/action/list_talks/info_beamer", methods=("POST",))
 def host_list_talks():
-    return jsonify(lib.base.list_talks(app.config))
+    return jsonify(lib.base.list_talks(app.config, redis_client))
+
 
 @app.route("/host/action/end_talks/info_beamer", methods=("POST",))
 def host_action_end_talks():
-    return jsonify(lib.info_beamer.end_talks(app.config))
+    return jsonify(lib.info_beamer.end_talks(app.config, redis_client))
 
 
 @app.route("/host/final")

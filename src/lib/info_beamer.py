@@ -9,7 +9,7 @@ session = Session()
 session.auth = ("", read_secret("INFO_BEAMER_API_KEY"))
 
 
-def infobeamer_check(config):
+def infobeamer_check(config, redis_client):
     # Get all available devices.
     try:
         r = session.get(INFO_BEAMER_API + "device/list")
@@ -49,34 +49,47 @@ def infobeamer_check(config):
         return result("error", data=device, last_step="check-device-online")
     if not device["is_synced"]:
         return result("error", data=device, last_step="check-device-synced")
+    # Check if we have a state
+    if redis_client.get("info_beamer_state") is None:
+        return result("error", data=device, last_step="state")
     return result("ok", data=device)
 
 
 def infobeamer_assign_correct_setup(config):
-    return _infobeamer_assign_setup(
+    res = _infobeamer_assign_setup(
         int(config["INFO-BEAMER_pi-id"]),
         int(config["INFO-BEAMER_talks-setup-id"])
     )
+    if res["status"] == "ok":
+        redis_client.set("info_beamer_state", "background")
+    return res
 
 
-def get_state():
-    return result("ok", data="background")  # TODO
+def get_state(redis_client):
+    value = redis_client.get("info_beamer_state")
+    return result("ok", data=value)
 
 
-def begin_talks(config):
-    return _infobeamer_send_command(
+def begin_talks(config, redis_client):
+    res = _infobeamer_send_command(
         int(config["INFO-BEAMER_pi-id"]),
         "freitagsfoo/screen",
         "title",
     )
+    if res["status"] == "ok":
+        redis_client.set("info_beamer_state", "talks")
+    return res
 
 
-def end_talks(config):
-    return _infobeamer_send_command(
+def end_talks(config, redis_client):
+    res = _infobeamer_send_command(
         int(config["INFO-BEAMER_pi-id"]),
         "freitagsfoo/screen",
         "initial"
     )
+    if res["status"] == "ok":
+        redis_client.set("info_beamer_state", "background")
+    return res
 
 
 def _infobeamer_assign_setup(pi_id, setup_id):

@@ -28,6 +28,11 @@
         Couldn't assign setup "{{ piSetupName }}" ({{ piSetupId }}) to the Info-Beamer Pi ({{ piId }}).
         <a v-on:click="piChangeSetup" class="alert-link">Retry?</a>
     </div>
+    
+    <div v-if="piErrors.includes('resetState')" class="alert alert-danger action-status action-status-info-beamer" role="alert">
+        Couldn't talk to the Info-Beamer Pi.
+        <a v-on:click="piResetState" class="alert-link">Retry?</a>
+    </div>
 
     <div v-if="!checking && !piErrors.length && !networkErrors.length" class="alert alert-success check-status" role="alert">
         The Info-Beamer Pi ({{ piId }}) is running the setup "{{ piSetupName }}" ({{ piSetupId }}). (Yes, that's correct.)
@@ -42,6 +47,11 @@
         The Info-Beamer Pi ({{ piId }}) seems to be out of sync.
         Please wait a bit and then try re-checking.
         If that doesn't help, you might need to powercycle the device.
+    </div>
+    
+    <div v-if="piWarnings.includes('stateUnknown')" class="alert alert-warning check-status" role="alert">
+        We can't determine state the Info-Beamer Pi ({{ piId }}) is in.
+        <a v-on:click="piResetState" class="alert-link">Please reset it to the background.</a>
     </div>
     
     <div v-if="!checking && !piErrors.length && !networkErrors.length" class="alert alert-primary" role="alert">
