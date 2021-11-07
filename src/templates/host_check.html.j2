@@ -43,6 +43,14 @@
         Please wait a bit and then try re-checking.
         If that doesn't help, you might need to powercycle the device.
     </div>
+    
+    <div v-if="!checking && !piErrors.length && !networkErrors.length" class="alert alert-primary" role="alert">
+        You can turn on the projector now. (Remember to select the input labelled "video in".)
+    </div>
+
+    <div v-if="!checking && !piErrors.length && !networkErrors.length" class="alert alert-primary" role="alert">
+        You can prepare the speaker's desk now.
+    </div>
 
     <div v-if="networkErrors.length" class="alert alert-danger check-status" role="alert">
         A network error occurred (reason: "{{ networkErrors }}").
@@ -53,7 +61,7 @@
     <div class="wizard-buttons">
         <a href="{{ url_for("host_initial") }}" class="btn btn-secondary" role="button">Back</a>
         <button type="button" class="btn btn-info" v-on:click="doCheck" v-bind:disabled="checking">Re-Check</button>
-        <a href="{{ url_for("host_review_talks") }}" class="btn btn-primary" role="button">Next: Review talks</a>
+        <a href="{{ url_for("host_action") }}" class="btn btn-primary" role="button">Next: Action</a>
     </div>
 </div>
 <script type="text/javascript" src="/static/host_check.js"></script>

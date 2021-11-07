@@ -1,65 +1,55 @@
 {% extends "host_base.html.j2" %}
+{% from "macros_talks.html.j2" import talks_table %}
 {% block title %}Action{% endblock %}
 {% block content %}
 <h1>Hosting a Freitagsfoo: Action</h1>
 
 <p>This is the main thing.</p>
 
-<div id="error-info-beamer" class="alert alert-danger action-status action-status-info-beamer" role="alert">
-    Couldn't connect to
-    <a href="https://info-beamer.com" rel="noopener noreferrer" target="_blank">info-beamer.com</a>.
-    Please check the connection to the internet.
-</div>
+<div id="talks">
+    <div v-if="errors.has('infoBeamer')" class="alert alert-danger action-status action-status-info-beamer" role="alert">
+        Couldn't connect to
+        <a href="https://info-beamer.com" rel="noopener noreferrer" target="_blank">info-beamer.com</a>.
+        Please check the connection to the internet.
+    </div>
 
-<div id="begin-talks-error-send-command" class="alert alert-danger action-status action-status-info-beamer" role="alert">
-    Couldn't talk to the Info-Beamer Pi.
-    <a href="#" onclick="doBeginInfoBeamer()" class="alert-link">Retry?</a>
-</div>
+    <div v-if="errors.has('beginTalksSendCommand')" class="alert alert-danger action-status action-status-info-beamer" role="alert">
+        Couldn't talk to the Info-Beamer Pi.
+        <a v-on:click="doBeginInfoBeamer" class="alert-link">Retry?</a>
+    </div>
 
-<div id="begin-talks-info-beamer-success" class="alert alert-success action-status action-status-info-beamer" role="alert">
-    The talks can begin now!<br />
-    Successfully told the Info-Beamer Pi to fade to the title screen.
-</div>
+    <div v-if="successes.has('beginTalksInfoBeamer')" class="alert alert-success action-status action-status-info-beamer" role="alert">
+        The talks can begin now!<br />
+        Successfully told the Info-Beamer Pi to fade to the title screen.
+    </div>
 
-<div id="end-talks-send-command" class="alert alert-danger action-status action-status-info-beamer" role="alert">
-    Couldn't talk to the Info-Beamer Pi.
-    <a href="#" onclick="doEndInfoBeamer()" class="alert-link">Retry?</a>
-</div>
+    <div v-if="errors.has('endTalksSendCommand')" class="alert alert-danger action-status action-status-info-beamer" role="alert">
+        Couldn't talk to the Info-Beamer Pi.
+        <a v-on:click="doEndInfoBeamer" class="alert-link">Retry?</a>
+    </div>
 
-<div id="end-talks-info-beamer-success" class="alert alert-success action-status action-status-info-beamer" role="alert">
-    You're mostly done.<br />
-    Successfully told the Info-Beamer Pi to fade to the background on the next animation.<br />
+    <div v-if="successes.has('endTalksInfoBeamer')" class="alert alert-success action-status action-status-info-beamer" role="alert">
+        You're mostly done.<br />
+        Successfully told the Info-Beamer Pi to fade to the background on the next animation.<br />
+    </div>
+    
+    {{ talks_table() }}
+    
+    <div class="btn-group btn-group-lg w-100 pb-1" role="group">
+        <button type="button" class="btn btn-primary btn-block" v-on:click="doBegin" v-bind:disabled="running.has('beginTalks')">Begin Talks</button>
+        <a tabindex="0" role="button" class="btn btn-info" data-toggle="popover" title="What does this button do?" data-content="<ul><li>tells the Info-Beamer Pi to fade to the title screen</li></ul>">?</a>
+    </div>
+    
+    <div class="btn-group btn-group-lg w-100 pb-1" role="group">
+        <button type="button" class="btn btn-primary btn-block" v-on:click="doEnd" v-bind:disabled="running.has('endTalks')">End Talks</button>
+        <a tabindex="0" role="button" class="btn btn-info" data-toggle="popover" title="What does this button do?" data-content="<ul><li>tells the Info-Beamer Pi to fade to the background</li></ul>">?</a>
+    </div>
+    
+    <div class="wizard-buttons mt-4">
+        <a href="{{ url_for("host_check") }}" class="btn btn-secondary" role="button">Back</a>
+        <button type="button" class="btn btn-info" v-on:click="fetch" v-bind:disabled="running.has('fetchState') || running.has('fetchTalks')">Refresh</button>
+        <a href="{{ url_for("host_final") }}" class="btn btn-primary" role="button">Next: Final</a>
+    </div>
 </div>
-
-<div id="network-error" class="alert alert-danger action-status" role="alert">
-    A network error occurred.
-    Please check your network connection.
-</div>
-
-<div class="btn-group btn-group-lg w-100 pb-1" role="group">
-    <button id="begin-talks-button" type="button" class="btn btn-primary btn-block" onclick="doBegin()">Begin Talks</button>
-    <a tabindex="0" role="button" class="btn btn-info" data-toggle="popover" title="What does this button do?" data-content="<ul><li>tells the Info-Beamer Pi to fade to the title screen</li></ul>">?</a>
-</div>
-
-<div class="btn-group btn-group-lg w-100 pb-1" role="group">
-    <button id="begin-talk-button" type="button" class="btn btn-secondary btn-block" disabled>Begin Talk (not yet ready)</button>
-    <a tabindex="0" role="button" class="btn btn-info" data-toggle="popover" title="What does this button do?" data-content="Nothing.">?</a>
-</div>
-
-<div class="btn-group btn-group-lg w-100 pb-1" role="group">
-    <button id="end-talk-button" type="button" class="btn btn-secondary btn-block" disabled>End Talk (not yet ready)</button>
-    <a tabindex="0" role="button" class="btn btn-info" data-toggle="popover" title="What does this button do?" data-content="Nothing.">?</a>
-</div>
-
-<div class="btn-group btn-group-lg w-100 pb-1" role="group">
-    <button id="end-talks-button" type="button" class="btn btn-primary btn-block" onclick="doEnd()">End Talks</button>
-    <a tabindex="0" role="button" class="btn btn-info" data-toggle="popover" title="What does this button do?" data-content="<ul><li>tells the Info-Beamer Pi to fade to the background</li></ul>">?</a>
-</div>
-
-<div class="wizard-buttons mt-3">
-    <a href="{{ url_for("host_review_talks") }}" class="btn btn-secondary" role="button">Back</a>
-    <a href="{{ url_for("host_final") }}" class="btn btn-primary" role="button">Next: Final</a>
-</div>
-
-<script type="text/javascript" src="/static/host_action.js"></script>
+<script type="text/javascript" src="/static/talks.js"></script>
 {% endblock %}

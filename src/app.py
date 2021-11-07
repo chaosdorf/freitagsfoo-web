@@ -81,17 +81,18 @@ def host_check_infobeamer():
         raise RuntimeError("should not be reached!")
 
 
-@app.route("/host/review_talks")
-def host_review_talks():
+@app.route("/host/action")
+def host_action():
     return render_template(
-        "host_review_talks.html.j2",
-        wiki_link=lib.talks.WIKI_URL_FORMAT.format(date.today())
+        "host_action.html.j2",
+        wiki_link=lib.talks.WIKI_URL_FORMAT.format(date.today()),
     )
 
 
-@app.route("/host/action")
-def host_action():
-    return render_template("host_action.html.j2")
+@app.route("/host/action/info_beamer/state", methods=("GET",))
+def host_action_info_beamer_state():
+    return jsonify(lib.info_beamer.get_state())
+
 
 
 @app.route("/host/action/begin_talks/info_beamer", methods=("POST",))

@@ -59,6 +59,10 @@ def infobeamer_assign_correct_setup(config):
     )
 
 
+def get_state():
+    return result("ok", data="background")  # TODO
+
+
 def begin_talks(config):
     return _infobeamer_send_command(
         int(config["INFO-BEAMER_pi-id"]),
