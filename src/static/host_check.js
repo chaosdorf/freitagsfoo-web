@@ -70,27 +70,30 @@ var checkApp = new Vue({
             this.checking = false;
         },
         piChangeSetup: function() {
-            jQuery("#pi-error-device-wrong-setup").fadeOut();
-            jQuery.ajax("/host/check/info-beamer", {method: "POST"}).always(function(data, status){
-                if(status !== "success") {
-                    this.networkErrors.push(status);
+            this.reset();
+            jQuery.ajax("/host/check/info-beamer", {method: "POST"})
+            .always(this.piChangeSetupCallback);
+        },
+        piChangeSetupCallback: function(data, status){
+            if(status !== "success") {
+                this.networkErrors.push(status);
+            }
+            else if(data["status"] === "ok") {
+                this.doCheckPi();
+            }
+            else if(data["status"] === "error") {
+                switch(data["last_step"]) {
+                    case "info-beamer.com":
+                        this.piErrors.push("infoBeamer");
+                        break;
+                    case "assign-setup":
+                        this.piErrors.push("assignSetup");
+                        this.piId = data["data"]["device"]["id"];
+                        this.piSetupName = data["data"]["actual"]["name"];
+                        this.piSetupId = data["data"]["actual"]["id"];
                 }
-                else if(data["status"] === "ok") {
-                    this.doCheckPi();
-                }
-                else if(data["status"] === "error") {
-                    switch(data["last_step"]) {
-                        case "info-beamer.com":
-                            this.piErrors.push("infoBeamer");
-                            break;
-                        case "assign-setup":
-                            this.piErrors.push("assignSetup");
-                            this.piId = data["data"]["device"]["id"];
-                            this.piSetupName = data["data"]["actual"]["name"];
-                            this.piSetupId = data["data"]["actual"]["id"];
-                    }
-                }
-            });
+            }
+            this.checking = false;
         },
         piResetState: function() {
             this.reset();
