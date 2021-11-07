@@ -10,6 +10,7 @@ Flask = "*"
 gunicorn = "*"
 raven = {version = "*",extras = ["flask"]}
 dealer = "*"
+toml = "*"
 
 [dev-packages]
 

@@ -4,7 +4,7 @@ from flask import Flask, render_template, jsonify, request
 from dealer.contrib.flask import Dealer
 from raven.contrib.flask import Sentry
 from dotenv import load_dotenv
-from configparser import ConfigParser
+import toml
 import lib.base
 import lib.talks
 import lib.info_beamer
@@ -12,11 +12,10 @@ import lib.info_beamer
 app = Flask(__name__)
 load_dotenv()
 config = dict()
-config_parser = ConfigParser()
-config_parser.read(environ["CONFIG_FILE"])
-for section in config_parser.sections():
-    for option in config_parser[section]:
-        config["_".join((section, option))] = config_parser[section][option]
+config_file = toml.load(environ["CONFIG_FILE"])
+for section in config_file.keys():
+    for option in config_file[section]:
+        config["_".join((section, option))] = config_file[section][option]
 app.config.update(config)
 Dealer(app)
 

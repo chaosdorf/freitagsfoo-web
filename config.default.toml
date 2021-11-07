@@ -1,6 +1,6 @@
 [INFO-BEAMER]
 pi-id = 1234
 background-setup-id = 1234
-background-setup-name = foo
+background-setup-name = "foo"
 talks-setup-id = 5678
-talks-setup-name = footalks
+talks-setup-name = "footalks"

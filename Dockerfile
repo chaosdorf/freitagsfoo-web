@@ -18,8 +18,8 @@ COPY Pipfile.lock ./
 RUN pipenv install --system --deploy
 COPY . ./
 COPY --from=Builder /opt/app/node_modules ./node_modules
-COPY config.default.cfg /etc/freitagsfoo-web.cfg
+COPY config.default.toml /etc/freitagsfoo-web.toml
 
-ENV CONFIG_FILE /etc/freitagsfoo-web.cfg
+ENV CONFIG_FILE /etc/freitagsfoo-web.toml
 ENTRYPOINT ["/usr/local/bin/gunicorn","-w","2","-b","0.0.0.0:5000","--chdir", "/opt/app/src", "app:app"]
 EXPOSE 5000/tcp
