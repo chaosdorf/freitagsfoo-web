@@ -3,6 +3,7 @@ from datetime import date
 from flask import Flask, render_template, jsonify, request
 from dealer.contrib.flask import Dealer
 from raven.contrib.flask import Sentry
+from flask_apscheduler import APScheduler
 from flask_redis import FlaskRedis
 from dotenv import load_dotenv
 import toml
@@ -18,6 +19,7 @@ for section in config_file.keys():
     for option in config_file[section]:
         config["_".join((section, option))] = config_file[section][option]
 app.config.update(config)
+scheduler = APScheduler(app=app)
 Dealer(app)
 redis_client = FlaskRedis(app)
 
@@ -49,6 +51,11 @@ def error_500(error):
     return render_template("error_500.html.j2"), 500
 
 
+@scheduler.task("interval", id="talks_fetch", seconds=60)
+def talks_fetch():
+    lib.talks.fetch(redis_client)
+
+
 @app.route("/")
 def hello():
     return render_template("index.html.j2")
@@ -56,7 +63,7 @@ def hello():
 
 @app.route("/talks/list")
 def list_talks():
-    return jsonify(lib.talks.table(date.today()))
+    return jsonify(lib.talks.list(redis_client))
 
 
 @app.route("/host")
@@ -124,3 +131,6 @@ def host_action_end_talks():
 @app.route("/host/final")
 def host_final():
     return render_template("host_final.html.j2")
+
+
+scheduler.start()
