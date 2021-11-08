@@ -61,11 +61,6 @@ def hello():
     return render_template("index.html.j2")
 
 
-@app.route("/talks/list")
-def list_talks():
-    return jsonify(lib.talks.list(redis_client))
-
-
 @app.route("/host")
 @app.route("/host/")
 def host_initial():
@@ -101,9 +96,16 @@ def host_action():
     )
 
 
-@app.route("/host/action/info_beamer/state", methods=("GET",))
-def host_action_info_beamer_state():
-    return jsonify(lib.info_beamer.get_state(redis_client))
+@app.route("/state", methods=("GET",))
+def host_action_get_state():
+    ib = lib.info_beamer.get_state(redis_client)
+    t = lib.talks.list(redis_client)
+    if ib["status"] == "ok" and t["status"] == "ok":
+        return jsonify(lib.base.result("ok", data={
+            "info-beamer": ib.get("data"),
+            "talks": t.get("data"),
+        }))
+    return jsonify(lib.base.result("error", reason="fetch"))
 
 
 @app.route("/host/action/begin_talks/info_beamer", methods=("POST",))

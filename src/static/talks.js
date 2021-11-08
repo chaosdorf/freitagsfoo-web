@@ -3,7 +3,7 @@
 var talksApp = new Vue({
     el: "#talks",
     data: {
-        running: new Set(['fetchTalks', 'fetchState']),
+        running: new Set(['fetchState']),
         successes: new Set([]),
         state: null,
         errors: new Set([]),
@@ -11,39 +11,21 @@ var talksApp = new Vue({
         wiki_link: null
     },
     methods: {
-        fetch: function() {
-            this.running.add('fetchTalks');
+        fetchState: function() {
             this.running.add('fetchState');
             this.errors.delete("network");
             this.errors.delete("fetch");
             this.$forceUpdate();
-            jQuery.ajax("/talks/list").always(this.fetchTableCallback);
-            jQuery.ajax("/host/action/info_beamer/state").always(this.fetchStateCallback);
-        },
-        fetchTableCallback: function(data, status) {
-            if(status !== "success") {
-                this.errors.add("network");
-            }
-            else if(data["status"] === "ok") {
-                this.talks = data["data"]["talks"];
-                this.wiki_link = data["data"]["wiki_link"];
-            }
-            else if(data["status"] === "error") {
-                switch(data["last_step"]) {
-                    case "fetch-json":
-                        this.errors.add("fetch");
-                        break;
-                }
-            }
-            this.running.delete("fetchTalks");
-            this.$forceUpdate();
+            jQuery.ajax("/state").always(this.fetchStateCallback);
         },
         fetchStateCallback: function(data, status) {
             if(status !== "success") {
                 this.errors.add("network");
             }
             else if(data["status"] === "ok") {
-                this.state = data["data"];
+                this.state = data["data"]["info-beamer"];
+                this.talks = data["data"]["talks"]["talks"];
+                this.wiki_link = data["data"]["talks"]["wiki_link"];
             }
             else if(data["status"] === "error") {
                 switch(data["last_step"]) {
@@ -86,6 +68,7 @@ var talksApp = new Vue({
                 }
             }
             this.running.delete("beginTalks");
+            this.fetchState();
             this.$forceUpdate();
         },
         doEnd: function() {
@@ -119,9 +102,10 @@ var talksApp = new Vue({
                 }
             }
             this.running.delete("endTalks");
+            this.fetchState();
             this.$forceUpdate();
         }
     }
 });
 
-window.onload = talksApp.fetch;
+window.onload = talksApp.fetchState;

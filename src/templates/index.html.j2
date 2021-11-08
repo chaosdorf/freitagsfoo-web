@@ -8,7 +8,7 @@
     {{ talks_table() }}
     
     <div class="wizard-buttons">
-        <button type="button" class="btn btn-info" v-on:click="fetch" v-bind:disabled="running.has('fetchState') || running.has('fetchTalks')">Refresh</button>
+        <button type="button" class="btn btn-info" v-on:click="fetchState" v-bind:disabled="running.has('fetchState')">Refresh</button>
     </div>
 </div>
 <script type="text/javascript" src="/static/talks.js"></script>
