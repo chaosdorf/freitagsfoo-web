@@ -33,14 +33,22 @@
         Successfully told the Info-Beamer Pi to fade to the background on the next animation.<br />
     </div>
     
+    <div v-if="errors.has('announceTalkSendCommand')" class="alert alert-danger action-status action-status-info-beamer" role="alert">
+        Couldn't talk to the Info-Beamer Pi.
+    </div>
+
+    <div v-if="successes.has('announceTalk')" class="alert alert-success action-status" role="alert">
+        Announced the talk.
+    </div>
+    
     {{ talks_table() }}
     
-    <div v-if="state == 'background'" class="btn-group btn-group-lg w-100 pb-1" role="group">
+    <div v-if="info_beamer_state.is_background" class="btn-group btn-group-lg w-100 pb-1" role="group">
         <button type="button" class="btn btn-primary btn-block" v-on:click="doBegin" v-bind:disabled="running.has('beginTalks')">Begin Talks</button>
         <a tabindex="0" role="button" class="btn btn-info" data-toggle="popover" title="What does this button do?" data-content="<ul><li>tells the Info-Beamer Pi to fade to the title screen</li></ul>">?</a>
     </div>
     
-    <div v-if="state == 'talks' || state === undefined || state === null" class="btn-group btn-group-lg w-100 pb-1" role="group">
+    <div v-if="!info_beamer_state.is_background" class="btn-group btn-group-lg w-100 pb-1" role="group">
         <button type="button" class="btn btn-primary btn-block" v-on:click="doEnd" v-bind:disabled="running.has('endTalks')">End Talks</button>
         <a tabindex="0" role="button" class="btn btn-info" data-toggle="popover" title="What does this button do?" data-content="<ul><li>tells the Info-Beamer Pi to fade to the background</li></ul>">?</a>
     </div>
@@ -52,4 +60,5 @@
     </div>
 </div>
 <script type="text/javascript" src="/static/talks.js"></script>
+<script type="text/javascript">talksApp.is_host = true;</script>
 {% endblock %}

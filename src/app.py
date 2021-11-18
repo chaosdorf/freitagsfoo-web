@@ -115,7 +115,7 @@ def host_action_begin_talks():
 
 @app.route("/host/action/announce_talk/info_beamer", methods=("POST",))
 def host_announce_talk():
-    return jsonify(lib.base.announce_talk(
+    return jsonify(lib.info_beamer.announce_talk(
         app.config, redis_client, int(request.form["index"])
     ))
 

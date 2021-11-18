@@ -5,9 +5,13 @@ var talksApp = new Vue({
     data: {
         running: new Set(['fetchState']),
         successes: new Set([]),
-        state: null,
+        info_beamer_state: {
+            is_background: null,
+            announced_talk: null
+        },
         errors: new Set([]),
         talks: [],
+        is_host: false,
         wiki_link: null
     },
     methods: {
@@ -23,7 +27,7 @@ var talksApp = new Vue({
                 this.errors.add("network");
             }
             else if(data["status"] === "ok") {
-                this.state = data["data"]["info-beamer"];
+                this.info_beamer_state = data["data"]["info-beamer"];
                 this.talks = data["data"]["talks"]["talks"];
                 this.wiki_link = data["data"]["talks"]["wiki_link"];
             }
@@ -102,6 +106,42 @@ var talksApp = new Vue({
                 }
             }
             this.running.delete("endTalks");
+            this.fetchState();
+            this.$forceUpdate();
+        },
+        doAnnounceTalk: function(index) {
+            this.successes.delete("announceTalk");
+            this.errors.delete("infoBeamer");
+            this.errors.delete("announceTalkSendCommand");
+            this.$forceUpdate();
+            if(index == this.info_beamer_state.announced_talk) {
+                index = -1;
+            }
+            console.log(index);
+            jQuery.ajax("/host/action/announce_talk/info_beamer", {
+                method: "POST",
+                data: {index: index}
+            })
+            .always(this.doAnnounceTalkCallback);
+        },
+        doAnnounceTalkCallback: function(data, status){
+            if(status !== "success") {
+                this.errors.add("network");
+            }
+            else if(data["status"] === "ok") {
+                this.successes.add("announceTalk");
+            }
+            else if(data["status"] === "error") {
+                switch(data["last_step"]) {
+                    case "info-beamer.com":
+                        this.errors.add("infoBeamer");
+                        break;
+                    case "send-command":
+                        this.errors.add("announceTalkSendCommand");
+                        break;
+                }
+            }
+            this.running.delete("announceTalk");
             this.fetchState();
             this.$forceUpdate();
         }

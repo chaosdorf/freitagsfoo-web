@@ -18,10 +18,11 @@
                 <th scope="col">Title</th>
                 <th scope="col">Person(s)</th>
                 <th scope="col">Link to Wiki</th>
+                <th scope="col" v-if="is_host">Announce?</th>
             </tr>
         </thead>
         <tbody>
-            <tr v-for="(talk, index) in talks" v-bind:key="index">
+            <tr v-for="(talk, index) in talks" v-bind:key="index" v-bind:class="{'table-primary': index == info_beamer_state.announced_talk}">
                 <th scope="row"> {{ index }}</th>
                 <td>{{ talk.title }}</td>
                 <td>
@@ -33,6 +34,9 @@
                 </td>
                 <td>
                         <a v-bind:href="talk.wiki_link" rel="noopener noreferrer" target="_blank">Link</a>
+                </td>
+                <td v-if="is_host">
+                    <button type="button" class="btn btn-primary btn-block" v-on:click="doAnnounceTalk(index)" v-bind:disabled="running.has('announceTalk')" v-bind:class="{active: index == info_beamer_state.announced_talk}">Announce</button>
                 </td>
             </tr>
             <tr v-if="!talks.length">

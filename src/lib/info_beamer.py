@@ -1,5 +1,6 @@
 from requests import Session
 from requests.exceptions import ConnectionError, HTTPError
+import json
 from .base import read_secret, result
 
 INFO_BEAMER_API = "https://info-beamer.com/api/v1/"
@@ -61,13 +62,15 @@ def infobeamer_assign_correct_setup(config):
         int(config["INFO-BEAMER_talks-setup-id"])
     )
     if res["status"] == "ok":
-        redis_client.set("info_beamer_state", "background")
+        redis_client.set("info_beamer_state", json.dumps({
+            "is_background": True,
+            "announced_talk": None,
+        }))
     return res
 
 
 def get_state(redis_client):
-    value = redis_client.get("info_beamer_state")
-    return result("ok", data=value)
+    return result("ok", data=json.loads(redis_client.get("info_beamer_state")))
 
 
 def begin_talks(config, redis_client):
@@ -77,7 +80,45 @@ def begin_talks(config, redis_client):
         "title",
     )
     if res["status"] == "ok":
-        redis_client.set("info_beamer_state", "talks")
+        redis_client.set("info_beamer_state", json.dumps({
+            "is_background": False,
+            "announced_talk": None,
+        }))
+    return res
+
+
+def announce_talk(config, redis_client, talk_index):
+    if talk_index == -1:
+        res = _infobeamer_send_command(
+            int(config["INFO-BEAMER_pi-id"]),
+            "freitagsfoo/screen",
+            "talks"
+        )
+        if res["status"] == "error":
+            return res
+        if res["status"] == "ok":
+            redis_client.set("info_beamer_state", json.dumps({
+                "is_background": False,
+                "announced_talk": None,
+            }))
+        return res
+    res = _infobeamer_send_command(
+        int(config["INFO-BEAMER_pi-id"]),
+        "freitagsfoo/screen",
+        "next"
+    )
+    if res["status"] == "error":
+        return res
+    res = _infobeamer_send_command(
+        int(config["INFO-BEAMER_pi-id"]),
+        "next_screen/talk_index",
+        talk_index
+    )
+    if res["status"] == "ok":
+        redis_client.set("info_beamer_state", json.dumps({
+            "is_background": False,
+            "announced_talk": talk_index,
+        }))
     return res
 
 
@@ -88,7 +129,10 @@ def end_talks(config, redis_client):
         "initial"
     )
     if res["status"] == "ok":
-        redis_client.set("info_beamer_state", "background")
+        redis_client.set("info_beamer_state", json.dumps({
+            "is_background": True,
+            "announced_talk": None,
+        }))
     return res
 
 
