@@ -15,28 +15,35 @@ var talksApp = new Vue({
         wiki_link: null
     },
     methods: {
+        handleNetworkError: function(error) {
+            this.errors.add("network");
+        },
         fetchState: function() {
             this.running.add('fetchState');
             this.errors.delete("network");
             this.errors.delete("fetch");
             this.$forceUpdate();
-            jQuery.ajax("/state").always(this.fetchStateCallback);
+            fetch("/state")
+            .then(this.fetchStateCallback, this.handleNetworkError);
         },
-        fetchStateCallback: function(data, status) {
-            if(status !== "success") {
+        fetchStateCallback: function(response) {
+            if(!response.ok) {
                 this.errors.add("network");
-            }
-            else if(data["status"] === "ok") {
-                this.info_beamer_state = data["data"]["info-beamer"];
-                this.talks = data["data"]["talks"]["talks"];
-                this.wiki_link = data["data"]["talks"]["wiki_link"];
-            }
-            else if(data["status"] === "error") {
-                switch(data["last_step"]) {
-                    case "fetch-json":
-                        this.errors.add("fetch");
-                        break;
-                }
+            } else {
+                response.json().then((data) => {
+                    if(data["status"] === "ok") {
+                        this.info_beamer_state = data["data"]["info-beamer"];
+                        this.talks = data["data"]["talks"]["talks"];
+                        this.wiki_link = data["data"]["talks"]["wiki_link"];
+                    }
+                    else if(data["status"] === "error") {
+                        switch(data["last_step"]) {
+                            case "fetch-json":
+                                this.errors.add("fetch");
+                                break;
+                        }
+                    }
+                });
             }
             this.running.delete("fetchState");
             this.$forceUpdate();
@@ -51,25 +58,28 @@ var talksApp = new Vue({
             this.errors.delete("infoBeamer");
             this.errors.delete("beginTalksSendCommand");
             this.$forceUpdate();
-            jQuery.ajax("/host/action/begin_talks/info_beamer", {method: "POST"})
-            .always(this.doBeginInfoBeamerCallback);
+            fetch("/host/action/begin_talks/info_beamer", {method: "POST"})
+            .then(this.doBeginInfoBeamerCallback, this.handleNetworkError);
         },
-        doBeginInfoBeamerCallback: function(data, status){
-            if(status !== "success") {
+        doBeginInfoBeamerCallback: function(response) {
+            if(!response.ok) {
                 this.errors.add("network");
-            }
-            else if(data["status"] === "ok") {
-                this.successes.add("beginTalksInfoBeamer");
-            }
-            else if(data["status"] === "error") {
-                switch(data["last_step"]) {
-                    case "info-beamer.com":
-                        this.errors.add("infoBeamer");
-                        break;
-                    case "send-command":
-                        this.errors.add("beginTalksSendCommand");
-                        break;
-                }
+            } else {
+                response.json().then((data) => {
+                    if(data["status"] === "ok") {
+                        this.successes.add("beginTalksInfoBeamer");
+                    }
+                    else if(data["status"] === "error") {
+                        switch(data["last_step"]) {
+                            case "info-beamer.com":
+                                this.errors.add("infoBeamer");
+                                break;
+                            case "send-command":
+                                this.errors.add("beginTalksSendCommand");
+                                break;
+                        }
+                    }
+                });
             }
             this.running.delete("beginTalks");
             this.fetchState();
@@ -85,25 +95,28 @@ var talksApp = new Vue({
             this.errors.delete("infoBeamer");
             this.errors.delete("endTalksSendCommand");
             this.$forceUpdate();
-            jQuery.ajax("/host/action/end_talks/info_beamer", {method: "POST"})
-            .always(this.doEndInfoBeamerCallback);
+            fetch("/host/action/end_talks/info_beamer", {method: "POST"})
+            .then(this.doEndInfoBeamerCallback, this.handleNetworkError);
         },
-        doEndInfoBeamerCallback: function(data, status){
-            if(status !== "success") {
+        doEndInfoBeamerCallback: function(response) {
+            if(!response.ok) {
                 this.errors.add("network");
-            }
-            else if(data["status"] === "ok") {
-                this.successes.add("endTalksInfoBeamer");
-            }
-            else if(data["status"] === "error") {
-                switch(data["last_step"]) {
-                    case "info-beamer.com":
-                        this.errors.add("infoBeamer");
-                        break;
-                    case "send-command":
-                        this.errors.add("endTalksSendCommand");
-                        break;
-                }
+            } else {
+                response.json().then((data) => {
+                    if(data["status"] === "ok") {
+                        this.successes.add("endTalksInfoBeamer");
+                    }
+                    else if(data["status"] === "error") {
+                        switch(data["last_step"]) {
+                            case "info-beamer.com":
+                                this.errors.add("infoBeamer");
+                                break;
+                            case "send-command":
+                                this.errors.add("endTalksSendCommand");
+                                break;
+                        }
+                    }
+                });
             }
             this.running.delete("endTalks");
             this.fetchState();
@@ -117,29 +130,30 @@ var talksApp = new Vue({
             if(index == this.info_beamer_state.announced_talk) {
                 index = -1;
             }
-            console.log(index);
-            jQuery.ajax("/host/action/announce_talk/info_beamer", {
+            let formData = new FormData();
+            formData.append("index", index);
+            fetch("/host/action/announce_talk/info_beamer", {
                 method: "POST",
-                data: {index: index}
+                body: formData
             })
-            .always(this.doAnnounceTalkCallback);
+            .then(this.doAnnounceTalkCallback, this.handleNetworkError);
         },
-        doAnnounceTalkCallback: function(data, status){
-            if(status !== "success") {
+        doAnnounceTalkCallback: function(response) {
+            if(!response.ok) {
                 this.errors.add("network");
-            }
-            else if(data["status"] === "ok") {
-                this.successes.add("announceTalk");
-            }
-            else if(data["status"] === "error") {
-                switch(data["last_step"]) {
-                    case "info-beamer.com":
-                        this.errors.add("infoBeamer");
-                        break;
-                    case "send-command":
-                        this.errors.add("announceTalkSendCommand");
-                        break;
-                }
+            } else {
+                response.json().then((data) => {
+                    if(data["status"] === "error") {
+                        switch(data["last_step"]) {
+                            case "info-beamer.com":
+                                this.errors.add("infoBeamer");
+                                break;
+                            case "send-command":
+                                this.errors.add("announceTalkSendCommand");
+                                break;
+                        }
+                    }
+                });
             }
             this.running.delete("announceTalk");
             this.fetchState();
