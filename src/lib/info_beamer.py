@@ -112,7 +112,7 @@ def announce_talk(config, redis_client, talk_index):
     res = _infobeamer_send_command(
         int(config["INFO-BEAMER_pi-id"]),
         "next_screen/talk_index",
-        talk_index
+        talk_index + 1
     )
     if res["status"] == "ok":
         redis_client.set("info_beamer_state", json.dumps({
