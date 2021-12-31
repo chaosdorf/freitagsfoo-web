@@ -10,7 +10,7 @@ RUN cd /opt/app && yarn
 
 FROM python:3.8-alpine
 
-RUN apk add --no-cache git
+RUN apk add --no-cache git gcc musl-dev
 RUN pip install --no-cache-dir pipenv
 WORKDIR /opt/app
 COPY Pipfile ./
