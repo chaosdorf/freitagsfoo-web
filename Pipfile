@@ -13,6 +13,7 @@ dealer = "*"
 toml = "*"
 flask-redis = "*"
 flask-apscheduler = "*"
+tzlocal = "<3"
 
 [dev-packages]
 
