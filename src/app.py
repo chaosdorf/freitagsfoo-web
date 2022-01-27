@@ -2,7 +2,8 @@ from os import environ
 from datetime import date
 from flask import Flask, render_template, jsonify, request
 from dealer.contrib.flask import Dealer
-from raven.contrib.flask import Sentry
+import sentry_sdk
+from sentry_sdk.integrations.flask import FlaskIntegration
 from flask_apscheduler import APScheduler
 from flask_redis import FlaskRedis
 from dotenv import load_dotenv
@@ -27,17 +28,17 @@ if app.env == "development":
     print("Not enabling Sentry in development.")
     sentry = None
 else:
-    sentry_cfg = app.config.get("SENTRY_CONFIG", dict())
-    sentry_cfg["release"] = app.revision
-    app.config["SENTRY_CONFIG"] = sentry_cfg
-    del sentry_cfg
-    sentry = Sentry(app, dsn=lib.base.read_secret("FFTALKS_SENTRY_DSN"))
+    sentry = sentry_sdk.init(
+        dsn=lib.base.read_secret("FFTALKS_SENTRY_DSN"),
+        integrations=[FlaskIntegration()],
+        release=app.revision,
+    )
 
 
 @app.context_processor
 def inject_js_sentry_dsn():
     return {
-        "sentry_dsn": sentry.client.get_public_dsn() if sentry else None
+        "sentry_dsn": sentry_sdk.Hub.current.client.dsn() if sentry else None
     }
 
 

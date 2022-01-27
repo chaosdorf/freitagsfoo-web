@@ -8,12 +8,12 @@ requests = "*"
 python-dotenv = "*"
 Flask = "*"
 gunicorn = "*"
-raven = {version = "*",extras = ["flask"]}
 dealer = "*"
 toml = "*"
 flask-redis = "*"
 flask-apscheduler = "*"
 tzlocal = "<3"
+sentry-sdk = {extras = ["flask"], version = "*"}
 
 [dev-packages]
 
