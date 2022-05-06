@@ -38,7 +38,7 @@ else:
 @app.context_processor
 def inject_js_sentry_dsn():
     return {
-        "sentry_dsn": sentry_sdk.Hub.current.client.dsn() if sentry else None
+        "sentry_dsn": sentry_sdk.Hub.current.client.dsn if sentry else None
     }
 
 
