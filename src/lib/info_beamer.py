@@ -70,7 +70,7 @@ def infobeamer_assign_correct_setup(config):
 
 
 def get_state(redis_client):
-    return result("ok", data=json.loads(redis_client.get("info_beamer_state")))
+    return result("ok", data=json.loads(str(redis_client.get("info_beamer_state"))))
 
 
 def begin_talks(config, redis_client):
