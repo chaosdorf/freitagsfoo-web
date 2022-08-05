@@ -16,6 +16,7 @@ tzlocal = "<3"
 sentry-sdk = {extras = ["flask"], version = "*"}
 
 [dev-packages]
+mypy = "*"
 
 [requires]
 python_version = "3.6"
