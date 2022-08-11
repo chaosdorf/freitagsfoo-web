@@ -65,6 +65,12 @@ var checkApp = new Vue({
                         this.piSetupName = data["data"]["setup"]["name"];
                         this.piSetupId = data["data"]["setup"]["id"];
                         break;
+                    case "extron":
+                        this.piWarnings.push("extronWrongInput");
+                        this.piId = data["data"]["id"];
+                        this.piSetupName = data["data"]["setup"]["name"];
+                        this.piSetupId = data["data"]["setup"]["id"];
+                        break;
                 }
             }
             this.checking = false;
@@ -114,6 +120,27 @@ var checkApp = new Vue({
                         break;
                     case "send-command":
                         this.piErrors.push("resetState");
+                }
+            }
+            this.checking = false;
+        },
+        extronSwitchPort: function() {
+            this.reset();
+            jQuery.ajax("/host/check/info-beamer", {method: "PUT"})
+            .always(this.extronSwitchPortCallback);
+        },
+        extronSwitchPortCallback: function(data, status) {
+            if (status !== "success") {
+                this.networkErrors.push(status);
+            }
+            else if (data["status"] === "ok") {
+                this.doCheckPi();
+            }
+            else if (data["status"] === "error") {
+                switch (data["last_step"]) {
+                    case "extron":
+                        this.piErrors.push("extron");
+                        break;
                 }
             }
             this.checking = false;

@@ -9,6 +9,11 @@ var talksApp = new Vue({
             is_background: null,
             announced_talk: null
         },
+        extron: {
+            available_inputs: [],
+            selected_inputs: {},
+            info_beamer_at_port: null
+        },
         errors: new Set([]),
         talks: [],
         is_host: false,
@@ -34,6 +39,7 @@ var talksApp = new Vue({
                     if(data["status"] === "ok") {
                         this.info_beamer_state = data["data"]["info-beamer"];
                         this.talks = data["data"]["talks"]["talks"];
+                        this.extron = data["data"]["extron"];
                         this.wiki_link = data["data"]["talks"]["wiki_link"];
                     }
                     else if(data["status"] === "error") {
@@ -86,7 +92,7 @@ var talksApp = new Vue({
             this.$forceUpdate();
         },
         doEnd: function() {
-            this.running.add("endTalks")
+            this.running.add("endTalks");
             this.errors.delete("network");
             this.doEndInfoBeamer();
         },
@@ -158,7 +164,62 @@ var talksApp = new Vue({
             this.running.delete("announceTalk");
             this.fetchState();
             this.$forceUpdate();
-        }
+        },
+        doBeginTalk: function(index, input) {
+            this.running.add("beginTalks")
+            this.successes.delete("beginTalk");
+            this.errors.delete("network");
+            this.$forceUpdate();
+            let formData = new FormData();
+            formData.append("talk", index);
+            formData.append("input", input);
+            fetch("/host/action/begin_talk", {
+                method: "POST",
+                body: formData
+            })
+            .then(this.doBeginTalkCallback, this.handleNetworkError);
+        },
+        doBeginTalkCallback: function(response) {
+            if (!response.ok) {
+                this.errors.add("network");
+            } else {
+                response.json().then((data) => {
+                    if (data["status"] === "error") {
+                        // TODO
+                    }
+                });
+            }
+            this.running.delete("beginTalk");
+            this.fetchState();
+            this.$forceUpdate();
+        },
+        doEndTalk: function (index) {
+            this.running.add("endTalk")
+            this.successes.delete("endTalk");
+            this.errors.delete("network");
+            this.$forceUpdate();
+            let formData = new FormData();
+            formData.append("talk", index);
+            fetch("/host/action/end_talk", {
+                method: "POST",
+                body: formData
+            })
+            .then(this.doEndTalkCallback, this.handleNetworkError);
+        },
+        doEndTalkCallback: function (response) {
+            if (!response.ok) {
+                this.errors.add("network");
+            } else {
+                response.json().then((data) => {
+                    if (data["status"] === "error") {
+                        // TODO
+                    }
+                });
+            }
+            this.running.delete("endTalk");
+            this.fetchState();
+            this.$forceUpdate();
+        },
     }
 });
 

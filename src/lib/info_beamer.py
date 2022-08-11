@@ -2,6 +2,7 @@ from requests import Session
 from requests.exceptions import ConnectionError, HTTPError
 import json
 from .base import read_secret, result
+from .extron import check_pi_is_input
 
 INFO_BEAMER_API = "https://info-beamer.com/api/v1/"
 session = Session()
@@ -53,6 +54,8 @@ def infobeamer_check(config, redis_client):
     # Check if we have a state
     if redis_client.get("info_beamer_state") is None:
         return result("error", data=device, last_step="state")
+    if not check_pi_is_input(redis_client):
+        return result("error", data=device, last_step="extron")
     return result("ok", data=device)
 
 

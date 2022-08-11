@@ -55,11 +55,20 @@
     </div>
     
     <div v-if="!checking && !piErrors.length && !networkErrors.length" class="alert alert-primary" role="alert">
-        You can turn on the projector now. (Remember to select the input labelled "video in".)
+        You can turn on the projector now.
     </div>
 
     <div v-if="!checking && !piErrors.length && !networkErrors.length" class="alert alert-primary" role="alert">
         You can prepare the speaker's desk now.
+    </div>
+
+    <div v-if="piWarnings.includes('extronWrongInput')" class="alert alert-warning check-status" role="alert">
+        The Info-Beamer Pi is not the currently selected beamer input.
+        <a v-on:click="extronSwitchPort" class="alert-link">Please switch to the Pi.</a>
+    </div>
+
+    <div v-if="piErrors.includes('extron')" class="alert alert-danger check-status" role="alert">
+        The av mixer returned an error.
     </div>
 
     <div v-if="networkErrors.length" class="alert alert-danger check-status" role="alert">

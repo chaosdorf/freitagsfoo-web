@@ -1,3 +1,4 @@
+import json
 from os import environ
 from datetime import date
 from flask import Flask, render_template, jsonify, request
@@ -11,6 +12,7 @@ import toml
 import lib.base
 import lib.talks
 import lib.info_beamer
+import lib.extron
 
 app = Flask(__name__)
 load_dotenv()
@@ -57,6 +59,11 @@ def talks_fetch():
     lib.talks.fetch(redis_client)
 
 
+@scheduler.task("interval", id="extron_fetch", seconds=15)
+def extron_fetch():
+    lib.extron.fetch_state(config, redis_client)
+
+
 @app.route("/")
 def hello():
     return render_template("index.html.j2")
@@ -73,7 +80,7 @@ def host_check():
     return render_template("host_check.html.j2")
 
 
-@app.route("/host/check/info-beamer", methods=("GET", "POST", "PATCH"))
+@app.route("/host/check/info-beamer", methods=("GET", "POST", "PATCH", "PUT"))
 def host_check_infobeamer():
     if request.method == "GET":
         return jsonify(lib.info_beamer.infobeamer_check(
@@ -85,6 +92,8 @@ def host_check_infobeamer():
         ))
     elif request.method == "PATCH":
         return jsonify(lib.info_beamer.end_talks(app.config, redis_client))
+    elif request.method == "PUT":
+        return jsonify(lib.extron.switch_to_pi(app.config, redis_client))
     else:
         raise RuntimeError("should not be reached!")
 
@@ -101,10 +110,12 @@ def host_action():
 def host_action_get_state():
     ib = lib.info_beamer.get_state(redis_client)
     t = lib.talks.list(redis_client)
-    if ib["status"] == "ok" and t["status"] == "ok":
+    e = lib.extron.get_state(redis_client)
+    if ib["status"] == "ok" and t["status"] == "ok" and e["status"] == "ok":
         return jsonify(lib.base.result("ok", data={
             "info-beamer": ib.get("data"),
             "talks": t.get("data"),
+            "extron": e.get("data"),
         }))
     return jsonify(lib.base.result("error", reason="fetch"))
 
@@ -124,6 +135,20 @@ def host_announce_talk():
 @app.route("/host/action/list_talks/info_beamer", methods=("POST",))
 def host_list_talks():
     return jsonify(lib.talks.list(redis_client))
+
+
+@app.route("/host/action/begin_talk", methods=("POST",))
+def host_begin_talk():
+    return jsonify(lib.extron.switch_to_input(
+        app.config, redis_client, int(request.form["input"])
+    ))
+
+
+@app.route("/host/action/end_talk", methods=("POST",))
+def host_end_talk():
+    return jsonify(lib.extron.switch_to_pi(
+        app.config, redis_client
+    ))
 
 
 @app.route("/host/action/end_talks/info_beamer", methods=("POST",))
