@@ -56,7 +56,7 @@ def infobeamer_check(config, redis_client):
     return result("ok", data=device)
 
 
-def infobeamer_assign_correct_setup(config):
+def infobeamer_assign_correct_setup(config, redis_client):
     res = _infobeamer_assign_setup(
         int(config["INFO-BEAMER_pi-id"]),
         int(config["INFO-BEAMER_talks-setup-id"])
