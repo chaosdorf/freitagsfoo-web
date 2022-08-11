@@ -123,7 +123,7 @@ def host_announce_talk():
 
 @app.route("/host/action/list_talks/info_beamer", methods=("POST",))
 def host_list_talks():
-    return jsonify(lib.base.list_talks(app.config, redis_client))
+    return jsonify(lib.talks.list(redis_client))
 
 
 @app.route("/host/action/end_talks/info_beamer", methods=("POST",))
