@@ -17,6 +17,7 @@ sentry-sdk = {extras = ["flask"], version = "*"}
 
 [dev-packages]
 mypy = "*"
+types-requests = "*"
 
 [requires]
 python_version = "3.6"
