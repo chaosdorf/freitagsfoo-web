@@ -4,6 +4,7 @@ from requests import Session
 from requests.exceptions import ConnectionError, HTTPError
 import json
 from .base import result
+from .state import push_state
 
 WIKI_URL_FORMAT = "https://wiki.chaosdorf.de/Freitagsfoo/{}"
 JSON_URL = "https://www.chaosdorf.de/~ytvwld/freitagsfoo.json"
@@ -27,11 +28,12 @@ def fetch_for_date(date):
     return result("ok", data=data)
 
 
-def fetch(redis_client):
+def fetch(redis_client, sse):
     result = fetch_for_date(date.today())
     if result["status"] == "ok":
         print("fetched talks data")
         redis_client.set("talks", json.dumps(result["data"]))
+        push_state(redis_client, sse)
     else:
         print("error: failed to fetch talks data")
 

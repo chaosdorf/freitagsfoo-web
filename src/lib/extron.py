@@ -4,6 +4,7 @@ from requests import Session
 from requests.exceptions import ConnectionError, HTTPError
 import json
 from .base import result
+from .state import push_state
 
 session = Session()
 
@@ -27,7 +28,7 @@ def fetch_selected_inputs(config) -> Dict[str, int]:
     }
 
 
-def fetch_state(config, redis_client):
+def fetch_state(config, redis_client, sse):
     print("fetching av data")
     state = {
         "available_inputs": fetch_available_inputs(config),
@@ -35,6 +36,7 @@ def fetch_state(config, redis_client):
         "info_beamer_at_port": config["INFO-BEAMER_extron-port"],
     }
     redis_client.set("extron_state", json.dumps(state))
+    push_state(redis_client, sse)
 
 
 def get_state(redis_client):
@@ -50,13 +52,13 @@ def check_pi_is_input(redis_client) -> bool:
     return state["data"]["selected_inputs"]["video"] == state["data"]["info_beamer_at_port"]
 
 
-def switch_to_pi(config, redis_client):
-    return switch_to_input(config, redis_client, config["INFO-BEAMER_extron-port"])
+def switch_to_pi(config, redis_client, sse):
+    return switch_to_input(config, redis_client, sse, config["INFO-BEAMER_extron-port"])
 
 
-def switch_to_input(config, redis_client, port):
+def switch_to_input(config, redis_client, sse, port):
     resp = set_resource(config["EXTRON_url"], "/av/out/1/input/main", port)
-    fetch_state(config, redis_client)
+    fetch_state(config, redis_client, sse)
     return resp
 
 
@@ -68,6 +70,7 @@ def query_resource(base_url: str, resource_uri: str) -> dict:
 
 
 def set_resource(base_url: str, resource_uri: str, value: object) -> dict:
+    print([{"uri": resource_uri, "value": value}])
     response = session.post(
         urljoin(base_url, "api/swis/resources"),
         json=[{"uri": resource_uri, "value": value}],  # type: ignore

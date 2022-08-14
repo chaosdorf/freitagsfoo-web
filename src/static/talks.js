@@ -23,6 +23,13 @@ var talksApp = new Vue({
         handleNetworkError: function(error) {
             this.errors.add("network");
         },
+        setup: function() {
+            this.fetchState();
+            this.$sse.create({url: "/stream", format: "json"})
+            .on("message", this.handleState)
+            .on("error", this.handleNetworkError)
+            .connect();
+        },
         fetchState: function() {
             this.running.add('fetchState');
             this.errors.delete("network");
@@ -35,23 +42,26 @@ var talksApp = new Vue({
             if(!response.ok) {
                 this.errors.add("network");
             } else {
-                response.json().then((data) => {
-                    if(data["status"] === "ok") {
-                        this.info_beamer_state = data["data"]["info-beamer"];
-                        this.talks = data["data"]["talks"]["talks"];
-                        this.extron = data["data"]["extron"];
-                        this.wiki_link = data["data"]["talks"]["wiki_link"];
-                    }
-                    else if(data["status"] === "error") {
-                        switch(data["last_step"]) {
-                            case "fetch-json":
-                                this.errors.add("fetch");
-                                break;
-                        }
-                    }
-                });
+                response.json().then(this.handleState);
             }
             this.running.delete("fetchState");
+            this.$forceUpdate();
+        },
+        handleState: function(data) {
+            console.log(data);
+            if (data["status"] === "ok") {
+                this.info_beamer_state = data["data"]["info-beamer"];
+                this.talks = data["data"]["talks"]["talks"];
+                this.extron = data["data"]["extron"];
+                this.wiki_link = data["data"]["talks"]["wiki_link"];
+            }
+            else if (data["status"] === "error") {
+                switch (data["last_step"]) {
+                    case "fetch-json":
+                        this.errors.add("fetch");
+                        break;
+                }
+            }
             this.$forceUpdate();
         },
         doBegin: function() {
@@ -223,4 +233,7 @@ var talksApp = new Vue({
     }
 });
 
-window.onload = talksApp.fetchState;
+window.onload = function() {
+    Vue.use(VueSSE);
+    talksApp.setup();
+}

@@ -1,6 +1,8 @@
 from requests import Session
 from requests.exceptions import ConnectionError, HTTPError
 import json
+
+from .state import push_state
 from .base import read_secret, result
 from .extron import check_pi_is_input
 
@@ -79,7 +81,7 @@ def get_state(redis_client):
     return result("ok", data=None)
 
 
-def begin_talks(config, redis_client):
+def begin_talks(config, redis_client, sse):
     res = _infobeamer_send_command(
         int(config["INFO-BEAMER_pi-id"]),
         "freitagsfoo/screen",
@@ -90,10 +92,11 @@ def begin_talks(config, redis_client):
             "is_background": False,
             "announced_talk": None,
         }))
+        push_state(redis_client, sse)
     return res
 
 
-def announce_talk(config, redis_client, talk_index):
+def announce_talk(config, redis_client, sse, talk_index):
     if talk_index == -1:
         res = _infobeamer_send_command(
             int(config["INFO-BEAMER_pi-id"]),
@@ -125,10 +128,11 @@ def announce_talk(config, redis_client, talk_index):
             "is_background": False,
             "announced_talk": talk_index,
         }))
+        push_state(redis_client, sse)
     return res
 
 
-def end_talks(config, redis_client):
+def end_talks(config, redis_client, sse):
     res = _infobeamer_send_command(
         int(config["INFO-BEAMER_pi-id"]),
         "freitagsfoo/screen",
@@ -139,6 +143,7 @@ def end_talks(config, redis_client):
             "is_background": True,
             "announced_talk": None,
         }))
+        push_state(redis_client, sse)
     return res
 
 

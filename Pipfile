@@ -14,6 +14,8 @@ flask-redis = "*"
 flask-apscheduler = "*"
 tzlocal = "<3"
 sentry-sdk = {extras = ["flask"], version = "*"}
+flask-sse = "*"
+gevent = "*"
 
 [dev-packages]
 mypy = "*"
