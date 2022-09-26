@@ -39,7 +39,7 @@ def fetch(redis_client, sse):
 
 
 def list(redis_client):
-    data = json.loads(redis_client.get("talks"))
+    data = redis_client.get("talks")
     if data is None:
         return result("error", last_step="fetch-json")
-    return result("ok", data=data)
+    return result("ok", data=json.loads(data))

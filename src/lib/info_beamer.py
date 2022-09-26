@@ -78,7 +78,10 @@ def get_state(redis_client):
     data = redis_client.get("info_beamer_state")
     if data:
         return result("ok", data=json.loads(data))
-    return result("ok", data=None)
+    return result("ok", data={
+        "is_background": None,
+        "announced_talk": None,
+    })
 
 
 def begin_talks(config, redis_client, sse):
