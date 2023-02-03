@@ -147,17 +147,25 @@ def host_list_talks():
 @app.route("/host/action/begin_talk", methods=("POST",))
 def host_begin_talk():
     with app.app_context():
-        return jsonify(lib.extron.switch_to_input(
+        extron_result = lib.extron.switch_to_input(
             app.config, redis_client, sse, int(request.form["input"]),
-        ))
+        )
+        if extron_result["status"] == "err":
+            return jsonify(extron_result)
+        talks_result = lib.talks.begin_talk(redis_client, sse, int(request.form["talk"]))
+        return jsonify(talks_result)
 
 
 @app.route("/host/action/end_talk", methods=("POST",))
 def host_end_talk():
     with app.app_context():
-        return jsonify(lib.extron.switch_to_pi(
+        extron_result = lib.extron.switch_to_pi(
             app.config, redis_client, sse,
-        ))
+        )
+        if extron_result["status"] == "err":
+            return jsonify(extron_result)
+        talks_result = lib.talks.end_talk(redis_client, sse)
+        return jsonify(talks_result)
 
 
 @app.route("/host/action/end_talks/info_beamer", methods=("POST",))
