@@ -23,7 +23,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="(talk, index) in state.talks.talks" v-bind:key="index" v-bind:class="{'table-primary': index == state['info-beamer'].announced_talk, 'table-success': index == state.talks.current.index}">
+            <tr v-for="(talk, index) in state.talks.talks" v-bind:key="index" v-bind:class="{'table-primary': index == state['info-beamer'].announced_talk, 'table-success': index == state.talks.current.index, 'table-danger':  index == state.talks.current.index && talkRunningForMinutes >= 20}">
                 <th scope="row"> {{ index }}</th>
                 <td>{{ talk.title }}</td>
                 <td>
@@ -49,7 +49,9 @@
                                 (no input)
                             </b-dropdown-item-button>
                         </b-dropdown>
-                        <button type="button" class="btn btn-danger btn-block" v-on:click="doEndTalk(index)" v-bind:disabled="running.has('endTalk')" v-if="state.talks.current.index != null">End</button>
+                        <button type="button" class="btn btn-danger btn-block" v-on:click="doEndTalk(index)" v-bind:disabled="running.has('endTalk')" v-if="index == state.talks.current.index">
+                            End ({{ Math.trunc(talkRunningForMinutes) }} minutes)
+                        </button>
                     </div>
                 </td>
             </tr>

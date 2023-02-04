@@ -29,6 +29,14 @@ var talksApp = new Vue({
         },
         is_host: false
     },
+    computed: {
+        talkRunningForMinutes: {
+            get() {
+                let current = Date.now() / 1000;
+                return (current - this.state.talks.current.started_at) / 60;
+            }
+        }
+    },
     methods: {
         handleNetworkError: function(error) {
             this.errors.add("network");
