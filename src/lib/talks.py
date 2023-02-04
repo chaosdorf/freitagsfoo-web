@@ -36,7 +36,10 @@ def fetch(redis_client, sse):
         if old_data is not None:
             result["data"]["current"] = old_data.get("current")
         else:
-            result["data"]["current"] = None
+            result["data"]["current"] = {
+                "index": None,
+                "started_at": None,
+            }
         redis_client.set("talks", json.dumps(result["data"]))
         push_state(redis_client, sse)
     else:
@@ -61,7 +64,10 @@ def begin_talk(redis_client, sse, index):
 
 
 def end_talk(redis_client, sse):
-    return _set_current_talk(redis_client, sse, None)
+    return _set_current_talk(redis_client, sse, {
+        "index": None,
+        "started_at": None,
+    })
 
 
 def list(redis_client):

@@ -41,12 +41,15 @@
                 </td>
                 <td v-if="is_host">
                     <div>
-                        <b-dropdown text="Switch to" class="m-md-2" variant="success" v-if="state.extron.selected_inputs.video == state.extron.info_beamer_at_port">
+                        <b-dropdown text="Switch to" class="m-md-2" variant="success" v-if="state.talks.current.index == null">
                             <b-dropdown-item-button v-for="(input, input_index) in state.extron.available_inputs" v-if="input.active" v-bind:key="index + input" v-on:click="doBeginTalk(index, input_index + 1)" v-bind:disabled="running.has('beginTalk')">
                                 {{ input.name }}
-                            </b-dropdown-item>
+                            </b-dropdown-item-button>
+                            <b-dropdown-item-button v-bind:key="index + 'no_input'" v-on:click="doBeginTalk(index, null)" v-bind:disabled="running.has('beginTalk')">
+                                (no input)
+                            </b-dropdown-item-button>
                         </b-dropdown>
-                        <button type="button" class="btn btn-danger btn-block" v-on:click="doEndTalk(index)" v-bind:disabled="running.has('endTalk')" v-if="state.extron.selected_inputs.video != state.extron.info_beamer_at_port">End</button>
+                        <button type="button" class="btn btn-danger btn-block" v-on:click="doEndTalk(index)" v-bind:disabled="running.has('endTalk')" v-if="state.talks.current.index != null">End</button>
                     </div>
                 </td>
             </tr>

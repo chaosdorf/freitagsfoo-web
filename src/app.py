@@ -147,11 +147,14 @@ def host_list_talks():
 @app.route("/host/action/begin_talk", methods=("POST",))
 def host_begin_talk():
     with app.app_context():
-        extron_result = lib.extron.switch_to_input(
-            app.config, redis_client, sse, int(request.form["input"]),
-        )
-        if extron_result["status"] == "err":
-            return jsonify(extron_result)
+        switch_to = json.loads(request.form["input"])
+        if switch_to:
+            extron_result = lib.extron.switch_to_input(
+                app.config, redis_client, sse, switch_to,
+            )
+            if extron_result["status"] == "err":
+                return jsonify(extron_result)
+        # ymmv: do we want to explicitly switch to the info-beamer in the other case?
         talks_result = lib.talks.begin_talk(redis_client, sse, int(request.form["talk"]))
         return jsonify(talks_result)
 

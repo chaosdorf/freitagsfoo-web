@@ -15,6 +15,10 @@ var talksApp = new Vue({
                 "hosts": ["FIXME"],
                 date: "1970-01-01",
                 talks: [],
+                current: {
+                    index: null,
+                    started_at: null,
+                },
                 wiki_link: null
             },
             extron: {
