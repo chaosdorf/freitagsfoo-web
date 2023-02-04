@@ -23,7 +23,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="(talk, index) in state.talks.talks" v-bind:key="index" v-bind:class="{'table-primary': index == state['info-beamer'].announced_talk}">
+            <tr v-for="(talk, index) in state.talks.talks" v-bind:key="index" v-bind:class="{'table-primary': index == state['info-beamer'].announced_talk, 'table-success': index == state.talks.current.index}">
                 <th scope="row"> {{ index }}</th>
                 <td>{{ talk.title }}</td>
                 <td>
