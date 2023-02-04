@@ -43,12 +43,12 @@
     
     {{ talks_table() }}
     
-    <div v-if="info_beamer_state.is_background" class="btn-group btn-group-lg w-100 pb-1" role="group">
+    <div v-if="state['info-beamer'].is_background" class="btn-group btn-group-lg w-100 pb-1" role="group">
         <button type="button" class="btn btn-primary btn-block" v-on:click="doBegin" v-bind:disabled="running.has('beginTalks')">Begin Talks</button>
         <a tabindex="0" role="button" class="btn btn-info" data-toggle="popover" title="What does this button do?" data-content="<ul><li>tells the Info-Beamer Pi to fade to the title screen</li></ul>">?</a>
     </div>
     
-    <div v-if="!info_beamer_state.is_background" class="btn-group btn-group-lg w-100 pb-1" role="group">
+    <div v-if="!state['info-beamer'].is_background" class="btn-group btn-group-lg w-100 pb-1" role="group">
         <button type="button" class="btn btn-primary btn-block" v-on:click="doEnd" v-bind:disabled="running.has('endTalks')">End Talks</button>
         <a tabindex="0" role="button" class="btn btn-info" data-toggle="popover" title="What does this button do?" data-content="<ul><li>tells the Info-Beamer Pi to fade to the background</li></ul>">?</a>
     </div>

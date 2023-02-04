@@ -5,19 +5,25 @@ var talksApp = new Vue({
     data: {
         running: new Set(['fetchState']),
         successes: new Set([]),
-        info_beamer_state: {
-            is_background: null,
-            announced_talk: null
-        },
-        extron: {
-            available_inputs: [],
-            selected_inputs: {},
-            info_beamer_at_port: null
-        },
         errors: new Set([]),
-        talks: [],
-        is_host: false,
-        wiki_link: null
+        state: {
+            "info-beamer": {
+                is_background: null,
+                announced_talk: null
+            },
+            talks: {
+                "hosts": ["FIXME"],
+                date: "1970-01-01",
+                talks: [],
+                wiki_link: null
+            },
+            extron: {
+                available_inputs: [],
+                selected_inputs: {},
+                info_beamer_at_port: null
+            }
+        },
+        is_host: false
     },
     methods: {
         handleNetworkError: function(error) {
@@ -50,10 +56,7 @@ var talksApp = new Vue({
         handleState: function(data) {
             console.log(data);
             if (data["status"] === "ok") {
-                this.info_beamer_state = data["data"]["info-beamer"];
-                this.talks = data["data"]["talks"]["talks"];
-                this.extron = data["data"]["extron"];
-                this.wiki_link = data["data"]["talks"]["wiki_link"];
+                this.state = data["data"];
             }
             else if (data["status"] === "error") {
                 switch (data["last_step"]) {
@@ -143,7 +146,7 @@ var talksApp = new Vue({
             this.errors.delete("infoBeamer");
             this.errors.delete("announceTalkSendCommand");
             this.$forceUpdate();
-            if(index == this.info_beamer_state.announced_talk) {
+            if(index == this.state['info-beamer'].announced_talk) {
                 index = -1;
             }
             let formData = new FormData();

@@ -23,7 +23,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="(talk, index) in talks" v-bind:key="index" v-bind:class="{'table-primary': index == info_beamer_state.announced_talk}">
+            <tr v-for="(talk, index) in state.talks.talks" v-bind:key="index" v-bind:class="{'table-primary': index == state['info-beamer'].announced_talk}">
                 <th scope="row"> {{ index }}</th>
                 <td>{{ talk.title }}</td>
                 <td>
@@ -37,20 +37,20 @@
                         <a v-bind:href="talk.wiki_link" rel="noopener noreferrer" target="_blank">Link</a>
                 </td>
                 <td v-if="is_host">
-                    <button type="button" class="btn btn-primary btn-block" v-on:click="doAnnounceTalk(index)" v-bind:disabled="running.has('announceTalk')" v-bind:class="{active: index == info_beamer_state.announced_talk}">Announce</button>
+                    <button type="button" class="btn btn-primary btn-block" v-on:click="doAnnounceTalk(index)" v-bind:disabled="running.has('announceTalk')" v-bind:class="{active: index == state['info-beamer'].announced_talk}">Announce</button>
                 </td>
                 <td v-if="is_host">
                     <div>
-                        <b-dropdown text="Switch to" class="m-md-2" variant="success" v-if="extron.selected_inputs.video == extron.info_beamer_at_port">
-                            <b-dropdown-item-button v-for="(input, input_index) in extron.available_inputs" v-if="input.active" v-bind:key="index + input" v-on:click="doBeginTalk(index, input_index + 1)" v-bind:disabled="running.has('beginTalk')">
+                        <b-dropdown text="Switch to" class="m-md-2" variant="success" v-if="state.extron.selected_inputs.video == state.extron.info_beamer_at_port">
+                            <b-dropdown-item-button v-for="(input, input_index) in state.extron.available_inputs" v-if="input.active" v-bind:key="index + input" v-on:click="doBeginTalk(index, input_index + 1)" v-bind:disabled="running.has('beginTalk')">
                                 {{ input.name }}
                             </b-dropdown-item>
                         </b-dropdown>
-                        <button type="button" class="btn btn-danger btn-block" v-on:click="doEndTalk(index)" v-bind:disabled="running.has('endTalk')" v-if="extron.selected_inputs.video != extron.info_beamer_at_port">End</button>
+                        <button type="button" class="btn btn-danger btn-block" v-on:click="doEndTalk(index)" v-bind:disabled="running.has('endTalk')" v-if="state.extron.selected_inputs.video != state.extron.info_beamer_at_port">End</button>
                     </div>
                 </td>
             </tr>
-            <tr v-if="!talks.length">
+            <tr v-if="!state.talks.length">
               <td class="text-center text-muted" colspan="4">
                 Sadly, there are currently no talks. Why don't you go ahead and add one?
               </td>
@@ -59,7 +59,7 @@
     </table>
 </div>
 <p>
-    You might also want to see the <a v-bind:href="wiki_link" rel="noopener noreferrer" target="_blank">wiki</a>.
+    You might also want to see the <a v-bind:href="state.talks.wiki_link" rel="noopener noreferrer" target="_blank">wiki</a>.
 </p>
 
 
