@@ -59,7 +59,7 @@ def error_500(error):
     return render_template("error_500.html.j2"), 500
 
 
-@scheduler.task("interval", id="talks_fetch", seconds=60)
+@scheduler.task("interval", id="talks_fetch", seconds=35)
 def talks_fetch():
     with app.app_context():
         lib.talks.fetch(redis_client, sse)
