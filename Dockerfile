@@ -21,5 +21,5 @@ COPY --from=Builder /opt/app/node_modules ./node_modules
 COPY config.default.toml /etc/freitagsfoo-web.toml
 
 ENV CONFIG_FILE /etc/freitagsfoo-web.toml
-ENTRYPOINT ["/usr/local/bin/gunicorn","-w","2","-b","0.0.0.0:5000","--chdir", "/opt/app/src", "app:app"]
+ENTRYPOINT ["/usr/local/bin/gunicorn","-w","2","-b","0.0.0.0:5000","--chdir", "/opt/app/src", "--timeout", "120", "app:app"]
 EXPOSE 5000/tcp
