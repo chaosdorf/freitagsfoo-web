@@ -29,7 +29,7 @@ def fetch_for_date(date):
 
 
 def fetch(redis_client, sse):
-    old_data = json.loads(redis_client.get("talks"))
+    old_data = json.loads(redis_client.get("talks") or "null")
     result = fetch_for_date(date.today())
     if result["status"] == "ok":
         print("fetched talks data")
