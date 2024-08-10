@@ -1,4 +1,4 @@
-FROM alpine as Builder
+FROM alpine AS builder
 
 RUN apk add --no-cache make npm yarn
 WORKDIR /opt/app
@@ -17,7 +17,7 @@ COPY Pipfile ./
 COPY Pipfile.lock ./
 RUN pipenv install --system --deploy
 COPY . ./
-COPY --from=Builder /opt/app/node_modules ./node_modules
+COPY --from=builder /opt/app/node_modules ./node_modules
 COPY config.default.toml /etc/freitagsfoo-web.toml
 
 ENV CONFIG_FILE /etc/freitagsfoo-web.toml
