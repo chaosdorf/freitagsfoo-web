@@ -6,7 +6,7 @@ name = "pypi"
 [packages]
 requests = "*"
 python-dotenv = "*"
-Flask = "*"
+Flask = "<2.3"
 gunicorn = "*"
 dealer = "*"
 toml = "*"
