@@ -1,17 +1,18 @@
 "use strict";
 
-var checkApp = new Vue({
-    el: "#check-status",
-    data: {
-        checking: true,
-        piId: null,
-        piSetupName: null,
-        piSetupId: null,
-        piExpectedSetupName: null,
-        piExpectedSetupId: null,
-        piErrors: [],
-        piWarnings: [],
-        networkErrors: []
+var checkApp = Vue.createApp({
+    data() {
+        return {
+            checking: true,
+            piId: null,
+            piSetupName: null,
+            piSetupId: null,
+            piExpectedSetupName: null,
+            piExpectedSetupId: null,
+            piErrors: [],
+            piWarnings: [],
+            networkErrors: []
+        };
     },
     methods: {
         handleNetworkError: function (error) {
@@ -166,7 +167,13 @@ var checkApp = new Vue({
             this.piWarnings = [];
             this.networkErrors = [];
         }
+    },
+    mounted() {
+        this.doCheck();
     }
 });
 
-window.onload = checkApp.doCheck;
+window.onload = function() {
+    checkApp.use(window["bootstrap-vue-next"].createBootstrap());
+    checkApp.mount("#check-status");
+}

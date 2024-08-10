@@ -1,1 +1,1 @@
-../../node_modules/vue/dist/vue.js
+../../node_modules/vue/dist/vue.global.js

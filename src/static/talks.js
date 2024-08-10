@@ -1,33 +1,34 @@
 "use strict";
 
-var talksApp = new Vue({
-    el: "#talks",
-    data: {
-        running: new Set(['fetchState']),
-        successes: new Set([]),
-        errors: new Set([]),
-        state: {
-            "info-beamer": {
-                is_background: null,
-                announced_talk: null
-            },
-            talks: {
-                "hosts": ["FIXME"],
-                date: "1970-01-01",
-                talks: [],
-                current: {
-                    index: null,
-                    started_at: null,
+var talksApp = Vue.createApp({
+    data() {
+        return {
+            running: new Set(['fetchState']),
+            successes: new Set([]),
+            errors: new Set([]),
+            state: {
+                "info-beamer": {
+                    is_background: null,
+                    announced_talk: null
                 },
-                wiki_link: null
-            },
-            extron: {
-                available_inputs: [],
-                selected_inputs: {},
-                info_beamer_at_port: null
-            }
-        },
-        is_host: false
+                talks: {
+                    "hosts": ["FIXME"],
+                    date: "1970-01-01",
+                    talks: [],
+                    current: {
+                        index: null,
+                        started_at: null,
+                    },
+                    wiki_link: null
+                },
+                extron: {
+                    available_inputs: [],
+                    selected_inputs: {},
+                    info_beamer_at_port: null
+                }
+            }, 
+            is_host: false
+        }
     },
     computed: {
         talkRunningForMinutes: {
@@ -40,13 +41,6 @@ var talksApp = new Vue({
     methods: {
         handleNetworkError: function(error) {
             this.errors.add("network");
-        },
-        setup: function() {
-            this.fetchState();
-            this.$sse.create({url: "/stream", format: "json"})
-            .on("message", this.handleState)
-            .on("error", this.handleNetworkError)
-            .connect();
         },
         fetchState: function() {
             this.running.add('fetchState');
@@ -245,10 +239,18 @@ var talksApp = new Vue({
             this.fetchState();
             this.$forceUpdate();
         },
+    },
+    mounted() {
+        this.fetchState();
+        this.$sse.create({ url: "/stream", format: "json" })
+            .on("message", this.handleState)
+            .on("error", this.handleNetworkError)
+            .connect();
     }
 });
 
 window.onload = function() {
-    Vue.use(VueSSE);
-    talksApp.setup();
+    talksApp.use(VueSSE);
+    talksApp.use(window["bootstrap-vue-next"].createBootstrap());
+    talksApp.mount("#talks");
 }
