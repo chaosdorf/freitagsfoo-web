@@ -118,10 +118,10 @@ bootstrap-vue-next@^0.24:
   resolved "https://registry.yarnpkg.com/bootstrap-vue-next/-/bootstrap-vue-next-0.24.6.tgz#b6c8fef326806244e0608753ff16ad4381133a76"
   integrity sha512-G38cI/pUHnGxKE9brEuIedc5dp112rZcK+3zeBkZbNh7UNyVHegj9uz9xabO1WQLw9gxq61FhSTtYqRCOfPGfg==
 
-bootstrap@^4.3.1:
-  version "4.6.2"
-  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-4.6.2.tgz#8e0cd61611728a5bf65a3a2b8d6ff6c77d5d7479"
-  integrity sha512-51Bbp/Uxr9aTuy6ca/8FbFloBUJZLHwnhTcnjIeRn2suQWsWzcuJhGjKDB5eppVte/8oCdOL3VuwxvZDUggwGQ==
+bootstrap@^5:
+  version "5.3.3"
+  resolved "https://registry.yarnpkg.com/bootstrap/-/bootstrap-5.3.3.tgz#de35e1a765c897ac940021900fcbb831602bac38"
+  integrity sha512-8HLCdWgyoMguSO9o+aH+iuZ+aht+mzW0u3HIMzVu7Srrpv7EBBxTnrFlSCskwdY1+EOFQSm7uMJhNQHkdPcmjg==
 
 csstype@^3.1.3:
   version "3.1.3"

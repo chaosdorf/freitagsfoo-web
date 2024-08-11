@@ -6,11 +6,14 @@
 <p>You're done!</p>
 
 <div class="alert alert-primary" role="alert">
+    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:">
+        <use xlink:href="#info-fill" />
+    </svg>
     Remember to turn off the projector and put away the speaker's desk.
 </div>
 
 <div class="wizard-buttons">
-    <a href="{{ url_for("host_action") }}" class="btn btn-secondary" role="button">Back</a>
-    <a href="#" class="btn btn-secondary disabled" role="button" aria-disabled="true">Next</a>
+    <a href="{{ url_for("host_action") }}" class="btn btn-secondary ms-1" role="button">Back</a>
+    <a href="#" class="btn btn-secondary disabled ms-1" role="button" aria-disabled="true">Next</a>
 </div>
 {% endblock %}

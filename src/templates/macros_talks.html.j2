@@ -1,11 +1,17 @@
 {% macro talks_table() -%}
 {% raw -%}
 <div v-if="errors.has('network')" class="alert alert-danger talks-status" role="alert">
+    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
+        <use xlink:href="#exclamation-triangle-fill" />
+    </svg>
     Couldn't connect to the server.
     Please check your network connection.
 </div>
 
 <div v-if="errors.has('fetch')" class="alert alert-danger talks-status" role="alert">
+    <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
+        <use xlink:href="#exclamation-triangle-fill" />
+    </svg>
     Couldn't fetch the data.
     Please check the connection to the internet.
 </div>

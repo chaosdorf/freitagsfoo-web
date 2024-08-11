@@ -8,36 +8,57 @@
 
 <div id="talks">
     <div v-if="errors.has('infoBeamer')" class="alert alert-danger action-status action-status-info-beamer" role="alert">
+        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
+            <use xlink:href="#exclamation-triangle-fill" />
+        </svg>
         Couldn't connect to
         <a href="https://info-beamer.com" rel="noopener noreferrer" target="_blank">info-beamer.com</a>.
         Please check the connection to the internet.
     </div>
 
     <div v-if="errors.has('beginTalksSendCommand')" class="alert alert-danger action-status action-status-info-beamer" role="alert">
+        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
+            <use xlink:href="#exclamation-triangle-fill" />
+        </svg>
         Couldn't talk to the Info-Beamer Pi.
         <a v-on:click="doBeginInfoBeamer" class="alert-link">Retry?</a>
     </div>
 
     <div v-if="successes.has('beginTalksInfoBeamer')" class="alert alert-success action-status action-status-info-beamer" role="alert">
+        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
+            <use xlink:href="#check-circle-fill" />
+        </svg>
         The talks can begin now!<br />
         Successfully told the Info-Beamer Pi to fade to the title screen.
     </div>
 
     <div v-if="errors.has('endTalksSendCommand')" class="alert alert-danger action-status action-status-info-beamer" role="alert">
+        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
+            <use xlink:href="#exclamation-triangle-fill" />
+        </svg>
         Couldn't talk to the Info-Beamer Pi.
         <a v-on:click="doEndInfoBeamer" class="alert-link">Retry?</a>
     </div>
 
     <div v-if="successes.has('endTalksInfoBeamer')" class="alert alert-success action-status action-status-info-beamer" role="alert">
+        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
+            <use xlink:href="#check-circle-fill" />
+        </svg>
         You're mostly done.<br />
         Successfully told the Info-Beamer Pi to fade to the background on the next animation.<br />
     </div>
     
     <div v-if="errors.has('announceTalkSendCommand')" class="alert alert-danger action-status action-status-info-beamer" role="alert">
+        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Danger:">
+            <use xlink:href="#exclamation-triangle-fill" />
+        </svg>
         Couldn't talk to the Info-Beamer Pi.
     </div>
 
     <div v-if="successes.has('announceTalk')" class="alert alert-success action-status" role="alert">
+        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">
+            <use xlink:href="#check-circle-fill" />
+        </svg>
         Announced the talk.
     </div>
     
@@ -45,18 +66,18 @@
     
     <div v-if="state['info-beamer'].is_background" class="btn-group btn-group-lg w-100 pb-1" role="group">
         <button type="button" class="btn btn-primary btn-block" v-on:click="doBegin" v-bind:disabled="running.has('beginTalks')">Begin Talks</button>
-        <a tabindex="0" role="button" class="btn btn-info" data-toggle="popover" title="What does this button do?" data-content="<ul><li>tells the Info-Beamer Pi to fade to the title screen</li></ul>">?</a>
+        <a tabindex="0" role="button" class="btn btn-info" data-bs-toggle="popover" title="What does this button do?" data-bs-content="<ul><li>tells the Info-Beamer Pi to fade to the title screen</li></ul>">?</a>
     </div>
     
     <div v-if="!state['info-beamer'].is_background" class="btn-group btn-group-lg w-100 pb-1" role="group">
         <button type="button" class="btn btn-primary btn-block" v-on:click="doEnd" v-bind:disabled="running.has('endTalks')">End Talks</button>
-        <a tabindex="0" role="button" class="btn btn-info" data-toggle="popover" title="What does this button do?" data-content="<ul><li>tells the Info-Beamer Pi to fade to the background</li></ul>">?</a>
+        <a tabindex="0" role="button" class="btn btn-info" data-bs-toggle="popover" title="What does this button do?" data-content="<ul><li>tells the Info-Beamer Pi to fade to the background</li></ul>">?</a>
     </div>
     
-    <div class="wizard-buttons mt-4">
-        <a href="{{ url_for("host_check") }}" class="btn btn-secondary" role="button">Back</a>
-        <button type="button" class="btn btn-info" v-on:click="fetchState" v-bind:disabled="running.has('fetchState')">Refresh</button>
-        <a href="{{ url_for("host_final") }}" class="btn btn-primary" role="button">Next: Final</a>
+    <div class="wizard-buttons my-4">
+        <a href="{{ url_for("host_check") }}" class="btn btn-secondary ms-1" role="button">Back</a>
+        <button type="button" class="btn btn-info ms-1" v-on:click="fetchState" v-bind:disabled="running.has('fetchState')">Refresh</button>
+        <a href="{{ url_for("host_final") }}" class="btn btn-primary ms-1" role="button">Next: Final</a>
     </div>
 </div>
 <script type="text/javascript" src="/static/talks.js"></script>
