@@ -27,7 +27,7 @@ var talksApp = Vue.createApp({
                     info_beamer_at_port: null
                 }
             }, 
-            is_host: false
+            is_host: document.location.pathname.includes("/host/")
         }
     },
     computed: {
