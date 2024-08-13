@@ -251,6 +251,5 @@ var talksApp = Vue.createApp({
 
 window.onload = function() {
     talksApp.use(VueSSE);
-    talksApp.use(window["bootstrap-vue-next"].createBootstrap());
     talksApp.mount("#talks");
 }

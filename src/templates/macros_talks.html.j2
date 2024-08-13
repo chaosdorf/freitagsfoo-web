@@ -46,19 +46,26 @@
                     <button type="button" class="btn btn-primary btn-block" v-on:click="doAnnounceTalk(index)" v-bind:disabled="running.has('announceTalk')" v-bind:class="{active: index == state['info-beamer'].announced_talk}">Announce</button>
                 </td>
                 <td v-if="is_host">
-                    <div>
-                        <b-dropdown text="Switch to" class="m-md-2" variant="success" v-if="state.talks.current.index == null">
-                            <b-dropdown-item-button v-for="(input, input_index) in state.extron.available_inputs" v-bind:active="input.active" v-bind:key="index + input" v-on:click="doBeginTalk(index, input_index + 1)" v-bind:disabled="running.has('beginTalk')">
-                                {{ input.name }}
-                            </b-dropdown-item-button>
-                            <b-dropdown-item-button v-bind:key="index + 'no_input'" v-on:click="doBeginTalk(index, null)" v-bind:disabled="running.has('beginTalk')">
-                                (no input)
-                            </b-dropdown-item-button>
-                        </b-dropdown>
-                        <button type="button" class="btn btn-danger btn-block" v-on:click="doEndTalk(index)" v-bind:disabled="running.has('endTalk')" v-if="index == state.talks.current.index">
-                            End ({{ Math.trunc(talkRunningForMinutes) }} minutes)
+                    <div class="dropdown" v-if="state.talks.current.index == null">
+                        <button class="btn btn-primary dropdown-toggle m-md-2" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Switch to
                         </button>
+                        <ul class="dropdown-menu">
+                            <li v-for="(input, input_index) in state.extron.available_inputs" v-bind:key="index + input">
+                                <a class="dropdown-item" v-bind:active="input.active" v-on:click="doBeginTalk(index, input_index + 1)" v-bind:disabled="running.has('beginTalk')">
+                                    {{ input.name }}
+                                </a>
+                            </li>
+                            <li v-bind:key="index + 'no_input'">
+                                <a class="dropdown-item" v-on:click="doBeginTalk(index, null)" v-bind:disabled="running.has('beginTalk')">
+                                    (no input)
+                                </a>
+                            </li>
+                        </ul>
                     </div>
+                    <button type="button" class="btn btn-danger btn-block" v-on:click="doEndTalk(index)" v-bind:disabled="running.has('endTalk')" v-if="index == state.talks.current.index">
+                        End ({{ Math.trunc(talkRunningForMinutes) }} minutes)
+                    </button>
                 </td>
             </tr>
             <tr v-if="state.talks.length == 0">

@@ -174,6 +174,5 @@ var checkApp = Vue.createApp({
 });
 
 window.onload = function() {
-    checkApp.use(window["bootstrap-vue-next"].createBootstrap());
     checkApp.mount("#check-status");
 }
