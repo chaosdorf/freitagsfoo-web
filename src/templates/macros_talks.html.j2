@@ -43,7 +43,7 @@
                         <a v-bind:href="talk.wiki_link" rel="noopener noreferrer" target="_blank">Link</a>
                 </td>
                 <td v-if="is_host">
-                    <button type="button" class="btn btn-primary btn-block" v-on:click="doAnnounceTalk(index)" v-bind:disabled="running.has('announceTalk')" v-bind:class="{active: index == state['info-beamer'].announced_talk}">Announce</button>
+                    <button type="button" class="btn btn-primary btn-block m-md-2" v-on:click="doAnnounceTalk(index)" v-bind:disabled="running.has('announceTalk')" v-bind:class="{active: index == state['info-beamer'].announced_talk}">Announce</button>
                 </td>
                 <td v-if="is_host">
                     <div class="dropdown" v-if="state.talks.current.index == null">
@@ -63,7 +63,7 @@
                             </li>
                         </ul>
                     </div>
-                    <button type="button" class="btn btn-danger btn-block" v-on:click="doEndTalk(index)" v-bind:disabled="running.has('endTalk')" v-if="index == state.talks.current.index">
+                    <button type="button" class="btn btn-danger btn-block m-md-2" v-on:click="doEndTalk(index)" v-bind:disabled="running.has('endTalk')" v-if="index == state.talks.current.index">
                         End ({{ Math.trunc(talkRunningForMinutes) }} minutes)
                     </button>
                 </td>
