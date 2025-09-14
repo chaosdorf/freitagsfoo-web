@@ -1,10 +1,9 @@
 import json
-import mimetypes
 from os import environ
 from datetime import date
 from flask import Flask, render_template, jsonify, request
 from flask.wrappers import Response
-from dealer.contrib.flask import Dealer
+from dealer.git import git
 import sentry_sdk
 from sentry_sdk.integrations.flask import FlaskIntegration
 from flask_apscheduler import APScheduler
@@ -26,19 +25,19 @@ for section in config_file.keys():
     for option in config_file[section]:
         config["_".join((section, option))] = config_file[section][option]
 app.config.update(config)
+app.config["REVISION"] = git.revision
 scheduler = APScheduler(app=app)
-Dealer(app)
 redis_client = FlaskRedis(app)
 app.register_blueprint(sse, url_prefix="/stream")
 
-if app.env == "development":
+if app.debug:
     print("Not enabling Sentry in development.")
     sentry = None
 else:
     sentry = sentry_sdk.init(
         dsn=lib.base.read_secret("FFTALKS_SENTRY_DSN"),
         integrations=[FlaskIntegration()],
-        release=app.revision,
+        release=app.config["REVISION"],
     )
 
 
